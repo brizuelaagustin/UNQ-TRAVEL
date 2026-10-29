@@ -1,13 +1,12 @@
 package Clases;
 
+import Atributos.Atributo;
 import Excepciones.ServicioInvalidoPorAtributoObligatorio;
 import Excepciones.servicioInvalidoPorAtributoExtra;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class ServicioIndividual extends ServicioTuristico{

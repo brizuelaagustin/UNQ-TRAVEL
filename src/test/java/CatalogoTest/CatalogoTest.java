@@ -1,12 +1,15 @@
 package CatalogoTest;
 
-import Clases.*;
+import Atributos.Atributo;
+import Clases.Catalogo;
+import Clases.PaqueteTuristico;
+import Clases.ServicioIndividual;
+import Clases.ServicioTuristico;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-import static Clases.Categoria.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CatalogoTest {
@@ -31,7 +34,7 @@ public class CatalogoTest {
         servicio5 = new ServicioIndividual(null,null,"suite para 2 personas","proveedor",
                 0.0f,1000f,ALOJAMIENTO);
         catalogo = new Catalogo();
-        atributo1 = new Atributo ("capacidadMaxima",true,10);
+        atributo1 = new Atributo("capacidadMaxima",true,10);
 
     }
     // TEST PRODUCTOS INDIVIDUALES
@@ -112,7 +115,7 @@ public class CatalogoTest {
     // TEST ATRIBUTOS EXTRA
     @Test
     void test008_seAgreganAtributosExtraAUnServicioIndividualYRetornaValoresCorrectos(){
-        servicio1.agregarAtributoExtra(atributo1,);
+        servicio1.agregarAtributoExtra(atributo1);
         assertEquals("capacidadMaxima",atributo1.getNombre());
         assertTrue(atributo1.isObligatorio());
     }

@@ -1,9 +1,9 @@
-package Clases;
+package Atributos;
 
 import lombok.Getter;
 
 @Getter
-public class Atributo {
+public abstract class Atributo {
     private String nombre;
     private boolean obligatorio;
     private Object valor;
@@ -14,7 +14,10 @@ public class Atributo {
         this.obligatorio = obligatrio;
     }
     public boolean esValido(){
-        return valor !=null;
+        if(valor == null){
+            return !obligatorio;
+        }
+        return tipoCorrecto(valor);
 
     }
 }
