@@ -8,5 +8,6 @@ public abstract class ServicioTuristico {
     public String descripcion;
 
     public abstract float getPrecioBase();
+    public abstract float getPrecioFinal();
 
 }
