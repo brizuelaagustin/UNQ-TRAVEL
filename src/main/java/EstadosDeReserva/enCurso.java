@@ -11,8 +11,7 @@ public class enCurso implements EstadoDeReserva {
         throw new reservaEnCursoAConfirmada("Operacion invalida, no es posible confirmar una reserva en curso");
     }
     public void cancelarReserva(Reserva reserva){
-        Cancelada nuevoEstado = new Cancelada();
-        reserva.actualizarReserva(nuevoEstado);
+        reserva.actualizarReserva(new Cancelada());
     }
     public void checkInReserva(Reserva reserva){
         throw new reservaEnCursoACheckIn("Operacion invalida, no es posible hacer checkIn a una reserva en curso");
@@ -21,9 +20,6 @@ public class enCurso implements EstadoDeReserva {
         throw new reservaEnCursoAEnCurso("Operacion invalida, la operacion ya esta en curso");
     }
     public void finalizarReserva(Reserva reserva){
-        Finalizada nuevoEstado = new Finalizada();
-        reserva.actualizarReserva(nuevoEstado);
+        reserva.actualizarReserva(new Finalizada());
     }
-    public void agregarItem(Catalogo catalogo){}
-    public void quitarItem(Catalogo catalogo){}
 }

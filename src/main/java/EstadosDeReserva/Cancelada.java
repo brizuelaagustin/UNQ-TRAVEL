@@ -20,6 +20,4 @@ public class Cancelada implements EstadoDeReserva {
     public void finalizarReserva(Reserva reserva){
         throw new reservaCancelada("Operacion invalida, la reserva fue cancelada");
     }
-    public void agregarItem(Catalogo catalogo){}
-    public void quitarItem(Catalogo catalogo){}
 }

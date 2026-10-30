@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
+import static Clases.Categoria.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CatalogoTest {

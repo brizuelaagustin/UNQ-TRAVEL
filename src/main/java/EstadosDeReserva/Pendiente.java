@@ -8,12 +8,10 @@ import Excepciones.reservas.reservaPendienteAenCurso;
 
 public class Pendiente implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva){
-        Confirmada nuevoEstado = new Confirmada();
-        reserva.actualizarReserva(nuevoEstado);
+        reserva.actualizarReserva(new Confirmada());
     }
     public void cancelarReserva(Reserva reserva){
-        Cancelada nuevoEstado = new Cancelada();
-        reserva.actualizarReserva(nuevoEstado);
+        reserva.actualizarReserva(new Cancelada());
     }
     public void checkInReserva(Reserva reserva){
         throw new reservaPendienteACheckIn("Operacion invalida, no es posible hacer checkin sobre una reserva pendiente");
@@ -24,6 +22,4 @@ public class Pendiente implements EstadoDeReserva {
     public void finalizarReserva(Reserva reserva){
         throw new reservaPendienteAFinalizada("Operacion invalida, no es posible finalizar una reserva pendiente");
     }
-    public void agregarItem(Catalogo catalogo){}
-    public void quitarItem(Catalogo catalogo){}
 }

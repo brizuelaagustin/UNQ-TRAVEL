@@ -20,6 +20,4 @@ public class Finalizada implements EstadoDeReserva {
     public void finalizarReserva(Reserva reserva){
         throw new reservaFinalizada("Operacion invalida, la reserva ya finalizo");
     }
-    public void agregarItem(Catalogo catalogo){}
-    public void quitarItem(Catalogo catalogo){}
 }

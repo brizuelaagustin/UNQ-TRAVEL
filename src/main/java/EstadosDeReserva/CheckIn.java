@@ -11,19 +11,15 @@ public class CheckIn implements EstadoDeReserva {
         throw new reservaCheckInAConfirmada("Operacion invalida, no es posible confirmar una reserva en checkin");
     }
     public void cancelarReserva(Reserva reserva){
-        Cancelada nuevoEstado = new Cancelada();
-        reserva.actualizarReserva(nuevoEstado);
+        reserva.actualizarReserva(new Cancelada());
     }
     public void checkInReserva(Reserva reserva){
         throw new reservaCheckInACheckIn("Operacion invalida, la reserva ya esta en checkIn");
     }
     public void enCursoReserva(Reserva reserva){
-        enCurso nuevoEstado = new enCurso();
-        reserva.actualizarReserva(nuevoEstado);
+        reserva.actualizarReserva(new enCurso());
     }
     public void finalizarReserva(Reserva reserva){
         throw new reservaCheckInAFinalizada("Operacion invalida, no es posible finalizar una reserva en checkIn");
     }
-    public void agregarItem(Catalogo catalogo){}
-    public void quitarItem(Catalogo catalogo){}
 }
