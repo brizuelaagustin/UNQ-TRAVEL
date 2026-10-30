@@ -8,10 +8,10 @@ public abstract class Atributo {
     private boolean obligatorio;
     private Object valor;
 
-    public Atributo(String nombre, boolean obligatrio, Object valor) {
+    public Atributo(String nombre, boolean obligatorio, Object valor) {
         this.nombre = nombre;
         this.valor = valor;
-        this.obligatorio = obligatrio;
+        this.obligatorio = obligatorio;
     }
     public boolean esValido(){
         if(valor == null){
