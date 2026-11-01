@@ -1,0 +1,18 @@
+package main.java.Clases.MetodosDeTraslado;
+import main.java.Clases.Reserva;
+
+
+public class TrasladoVIP {
+    private float porcentajeFijo;
+    private float cargoBase;
+
+    public TrasladoVIP(float porcentajeFijo, float cargoBase){
+        this.porcentajeFijo = porcentajeFijo;
+        this.cargoBase = cargoBase;
+    }
+
+    public float calcularCosto(Reserva reserva){
+        float precioDeLaReserva = reserva.getPrecio();
+        return (precioDeLaReserva * porcentajeFijo) + cargoBase;
+    }
+}

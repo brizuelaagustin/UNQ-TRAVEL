@@ -1,19 +1,17 @@
 package CatalogoTest;
 
 import Atributos.Atributo;
-import Clases.Catalogo;
-import Clases.PaqueteTuristico;
-import Clases.ServicioIndividual;
-import Clases.ServicioTuristico;
+import main.java.Clases.CatalogoTuristico.Catalogo;
+import main.java.Clases.CatalogoTuristico.PaqueteTuristico;
+import main.java.Clases.CatalogoTuristico.ServicioIndividual;
+import main.java.Clases.CatalogoTuristico.ServicioTuristico;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Map;
-
 import static Clases.Categoria.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CatalogoTest {
+public class CatalogoTuristicoTest {
     ServicioIndividual servicio1; // 2000, desc 10% (final 1800)
     ServicioIndividual servicio2; // 2200, sin descuento
     ServicioIndividual servicio3; // 2500, desc 20% (final 2000)

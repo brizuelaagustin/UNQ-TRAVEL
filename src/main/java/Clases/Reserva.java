@@ -1,20 +1,22 @@
-package Clases;
+package main.java.Clases;
 
 import EstadosDeReserva.EstadoDeReserva;
-import Excepciones.reservas.NoHayStockException;
-import Excepciones.reservas.ProductoNoEncontradoException;
+import lombok.Getter;
+import main.java.Clases.MetodosDeTraslado.Direccion;
+import main.java.Clases.MetodosDeTraslado.MetodoDeTraslado;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class Reserva {
     private EstadoDeReserva estadoDeReserva;
-    private EstrategiaDeTraslado estrategiaTraslado;
+    private MetodoDeTraslado estrategiaTraslado;
     private List<ServicioTuristico> servicios = new ArrayList<>();
     private Integer cuposDisponibles;
     private Integer tasaDeReserva;
     private Integer cantidadPasajeros;
-    private Destino direccionDestino;
+    private Direccion direccionDestino;
     private MetodoDePago metodoDePago;
     private Catalogo catalogo;
 
@@ -44,7 +46,18 @@ public class Reserva {
 //    public void quitarItem(Catalogo catalogo,ServicioTuristico servicio){
 //
 //    }
-//    public void setEstrategia(MetodoDeTraslado metodoT){}
+    public void setEstrategia(MetodoDeTraslado metodoT){
+        this.estrategiaTraslado = metodoT;
+    }
+
+    public float getPrecio(){
+        float total = 0;
+        for(ServicioTuristico s: servicios){
+            total += s.getPrecioFinal();
+        }
+        return total;
+    }
+
 
     public void actualizarReserva(EstadoDeReserva nuevoEstado){
           EstadoDeReserva estadoAnterior = estadoDeReserva;

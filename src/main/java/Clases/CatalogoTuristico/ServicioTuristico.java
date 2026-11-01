@@ -1,4 +1,4 @@
-package Clases;
+package main.java.Clases.CatalogoTuristico;
 
 import lombok.Getter;
 

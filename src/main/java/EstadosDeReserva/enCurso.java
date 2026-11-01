@@ -1,7 +1,6 @@
 package EstadosDeReserva;
 
-import Clases.Catalogo;
-import Clases.Reserva;
+import main.java.Clases.Reserva;
 import Excepciones.reservas.reservaEnCursoACheckIn;
 import Excepciones.reservas.reservaEnCursoAConfirmada;
 import Excepciones.reservas.reservaEnCursoAEnCurso;
