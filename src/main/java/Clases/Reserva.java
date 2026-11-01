@@ -1,9 +1,12 @@
 package main.java.Clases;
 
+import Clases.MetodoDePago.MetodoDePago;
 import EstadosDeReserva.EstadoDeReserva;
 import lombok.Getter;
 import main.java.Clases.MetodosDeTraslado.Direccion;
 import main.java.Clases.MetodosDeTraslado.MetodoDeTraslado;
+import main.java.Clases.CatalogoTuristico.ServicioTuristico;
+import main.java.Clases.CatalogoTuristico.Catalogo;
 
 import java.util.ArrayList;
 import java.util.List;
