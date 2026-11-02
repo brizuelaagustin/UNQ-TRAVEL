@@ -1,27 +1,31 @@
-package main.java.Clases;
+package Clases;
 
-import Clases.MetodoDePago.MetodoDePago;
+import CatalogoTuristico.ServicioTuristico;
+import Excepciones.reservas.NoHayStockException;
+import Excepciones.reservas.ServicioNoEncontradoException;
+import MetodoDePago.MetodoDePago;
 import EstadosDeReserva.EstadoDeReserva;
 import lombok.Getter;
-import main.java.Clases.MetodosDeTraslado.Direccion;
-import main.java.Clases.MetodosDeTraslado.MetodoDeTraslado;
-import main.java.Clases.CatalogoTuristico.ServicioTuristico;
-import main.java.Clases.CatalogoTuristico.Catalogo;
+import MetodosDeTraslado.Direccion;
+import MetodosDeTraslado.MetodoDeTraslado;
 
-import java.util.ArrayList;
-import java.util.List;
+import CatalogoTuristico.Catalogo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 public class Reserva {
     private EstadoDeReserva estadoDeReserva;
     private MetodoDeTraslado estrategiaTraslado;
-    private List<ServicioTuristico> servicios = new ArrayList<>();
+    private Map<ServicioTuristico,Integer> servicios = new HashMap<>();
     private Integer cuposDisponibles;
     private Integer tasaDeReserva;
     private Integer cantidadPasajeros;
     private Direccion direccionDestino;
     private MetodoDePago metodoDePago;
     private Catalogo catalogo;
+    private Cliente cliente;
 
     public void confirmarReserva(){
         estadoDeReserva.confirmarReserva(this);
@@ -43,38 +47,49 @@ public class Reserva {
         estadoDeReserva.finalizarReserva(this);
     }
 
-//    public void agregarItem(Catalogo catalogo,ServicioTuristico servicio){
-//
-//    }
-//    public void quitarItem(Catalogo catalogo,ServicioTuristico servicio){
-//
-//    }
     public void setEstrategia(MetodoDeTraslado metodoT){
         this.estrategiaTraslado = metodoT;
     }
 
     public float getPrecio(){
         float total = 0;
-        for(ServicioTuristico s: servicios){
-            total += s.getPrecioFinal();
+        for(Map.Entry<ServicioTuristico,Integer> s: servicios.entrySet()){
+            total += s.getKey().getPrecioFinal() * s.getValue();
         }
         return total;
     }
 
-
     public void actualizarReserva(EstadoDeReserva nuevoEstado){
-          EstadoDeReserva estadoAnterior = estadoDeReserva;
           estadoDeReserva = nuevoEstado;
     }
-//    public void agregarServicio(ServicioTuristico servicio,Integer cantidad){
-//        if(!catalogo.getServicios().contains(servicio)){
-//            throw new ProductoNoEncontradoException("No se puede agregar, porque no existe en el catalogo");
-//        }
-//        if(!catalogo.tieneStockParaReserva(servicio,cantidad)){
-//            throw new NoHayStockException("No se pueden agregar, no hay stock suficiente");
-//        }
-//        int cantidadActual = servicios.getOrDefault(servicio, 0);
-//        carritoDeProductos.put(producto, cantidadActual + cantProducto);
-//    }
-// ACA NO SE COMO MODELARLO, ME GENERO DUDA SI MODELAMOS CON UNA LISTA LOS SERVICIOS EN RESERVA O TAMBIEN TIENEN QUE SER UN MAP
+
+    public void agregarServicio(ServicioTuristico servicio,Integer cantidad){
+        estadoDeReserva.agregarServicio(this,servicio,cantidad);
+    }
+
+    public void incluirServicio(ServicioTuristico servicio, Integer cantidad){
+        if(!catalogo.getServicios().contains(servicio)){
+            throw new ServicioNoEncontradoException("No se puede agregar, porque no existe en el catalogo");
+        }
+        if(!catalogo.tieneStockParaReserva(servicio,cantidad)) {
+            throw new NoHayStockException("No se pueden agregar, no hay stock suficiente");
+        }
+        int cantidadActual = catalogo.getServiciosDisponibles().getOrDefault(servicio, 0);
+        servicios.put(servicio,cantidadActual + cantidad);
+    }
+    public void quitarServicio(ServicioTuristico servicio , Integer cantidad){
+        estadoDeReserva.quitarServicio(this, servicio, cantidad);
+    }
+
+    public void removerServicio(ServicioTuristico servicio, Integer cantidad){
+        if(! servicios.containsKey(servicio)){
+            throw  new ServicioNoEncontradoException("No se puede remover un servicio que no esta en la reserva");
+        }
+        int cantidadActual = servicios.getOrDefault(servicio,0);
+        if(cantidadActual > cantidad){
+            servicios.put(servicio, cantidadActual - cantidad);
+        }else{
+            throw new NoHayStockException("No hay esa cantidad de servicios suficientes para remover");
+        }
+    }
 }

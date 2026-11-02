@@ -1,6 +1,6 @@
-package Clases.MetodoDePago;
+package MetodoDePago;
 
-public class TarjetaDeCredito extends MetodoDePago {
+public class BilleteraVirtual extends MetodoDePago{
 
     public void validarDatos() {
     }

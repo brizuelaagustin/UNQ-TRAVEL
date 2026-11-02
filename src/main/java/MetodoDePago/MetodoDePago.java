@@ -1,4 +1,4 @@
-package Clases.MetodoDePago;
+package MetodoDePago;
 
 public abstract class MetodoDePago {
 //Hay que ver como implementarla, ademas en el uml dice que tarjeta de credito, transferencia bancara y billetera virtual

@@ -1,4 +1,4 @@
-package main.java.Clases.MetodosDeTraslado;
+package MetodosDeTraslado;
 
 public interface PlataformaTransporte {
      float estimarTraslado(Integer n, Direccion dir);

@@ -1,8 +1,8 @@
-package main.java.Clases.CatalogoTuristico;
+package CatalogoTuristico;
 
 import Atributos.Atributo;
 import Excepciones.ServicioInvalidoPorAtributoObligatorio;
-import Excepciones.servicioInvalidoPorAtributoExtra;
+import Excepciones.ServicioInvalidoPorAtributoExtra;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -33,13 +33,14 @@ public class ServicioIndividual extends ServicioTuristico{
     public void agregarAtributoExtra(Atributo atributo){
         atributosExtra.add(atributo);
     }
+
     public void validarAtributos(){
         if (id == null || nombre == null){
             throw new ServicioInvalidoPorAtributoObligatorio("servicio invalido, por falta de nombre o codigo");
         }
         for (Atributo a : atributosExtra) {
             if(!a.esValido()){
-              throw new servicioInvalidoPorAtributoExtra("atributo extra invalido");
+              throw new ServicioInvalidoPorAtributoExtra("atributo extra invalido");
             }
         }
     }

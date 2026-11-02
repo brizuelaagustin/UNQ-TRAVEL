@@ -1,6 +1,8 @@
 package EstadosDeReserva;
 
-import main.java.Clases.Reserva;
+import CatalogoTuristico.ServicioTuristico;
+import Excepciones.reservas.OperacionInvalidaException;
+import Clases.Reserva;
 import Excepciones.reservas.reservaCancelada;
 
 public class Cancelada implements EstadoDeReserva {
@@ -18,5 +20,15 @@ public class Cancelada implements EstadoDeReserva {
     }
     public void finalizarReserva(Reserva reserva){
         throw new reservaCancelada("Operacion invalida, la reserva fue cancelada");
+    }
+
+    @Override
+    public void agregarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
+        throw new OperacionInvalidaException("no se pueden agregar servicios en este estado");
+    }
+
+    @Override
+    public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
+        throw new OperacionInvalidaException("no se pueden quitar servicios en este estado");
     }
 }

@@ -1,6 +1,8 @@
 package EstadosDeReserva;
 
-import main.java.Clases.Reserva;
+import CatalogoTuristico.ServicioTuristico;
+import Excepciones.reservas.OperacionInvalidaException;
+import Clases.Reserva;
 import Excepciones.reservas.reservaCheckInACheckIn;
 import Excepciones.reservas.reservaCheckInAConfirmada;
 import Excepciones.reservas.reservaCheckInAFinalizada;
@@ -16,9 +18,19 @@ public class CheckIn implements EstadoDeReserva {
         throw new reservaCheckInACheckIn("Operacion invalida, la reserva ya esta en checkIn");
     }
     public void enCursoReserva(Reserva reserva){
-        reserva.actualizarReserva(new enCurso());
+        reserva.actualizarReserva(new EnCurso());
     }
     public void finalizarReserva(Reserva reserva){
         throw new reservaCheckInAFinalizada("Operacion invalida, no es posible finalizar una reserva en checkIn");
+    }
+
+    @Override
+    public void agregarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
+        throw new OperacionInvalidaException("no se pueden agregar servicios en este estado");
+    }
+
+    @Override
+    public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
+        throw new OperacionInvalidaException("no se pueden quitar servicios en este estado");
     }
 }

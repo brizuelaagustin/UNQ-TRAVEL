@@ -1,4 +1,4 @@
-package main.java.Clases.MetodosDeTraslado;
+package MetodosDeTraslado;
 import main.java.Clases.Reserva;
 
 public interface MetodoDeTraslado {

@@ -20,4 +20,5 @@ public abstract class Atributo {
         return tipoCorrecto(valor);
 
     }
+    protected abstract boolean tipoCorrecto(Object valor);
 }

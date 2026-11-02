@@ -1,4 +1,4 @@
-package main.java.Clases.MetodosDeTraslado;
+package MetodosDeTraslado;
 
 import lombok.Getter;
 

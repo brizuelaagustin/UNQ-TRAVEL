@@ -1,9 +1,9 @@
-package main.java.Clases.CatalogoTuristico;
+package CatalogoTuristico;
 
 public enum Categoria {
     ALOJAMIENTO,
     VUELO,
-    EXCURSIÓN,
+    EXCURSION,
     ALQUILERAUTO
 }
 

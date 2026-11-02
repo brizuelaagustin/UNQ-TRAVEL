@@ -1,15 +1,17 @@
-package CatalogoTest;
-
-import Atributos.Atributo;
-import main.java.Clases.CatalogoTuristico.Catalogo;
-import main.java.Clases.CatalogoTuristico.PaqueteTuristico;
-import main.java.Clases.CatalogoTuristico.ServicioIndividual;
-import main.java.Clases.CatalogoTuristico.ServicioTuristico;
+import Atributos.*;
+import CatalogoTuristico.Catalogo;
+import CatalogoTuristico.PaqueteTuristico;
+import CatalogoTuristico.ServicioIndividual;
+import CatalogoTuristico.ServicioTuristico;
+import Excepciones.ServicioInvalidoPorAtributoExtra;
+import Excepciones.ServicioInvalidoPorAtributoObligatorio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 import java.util.Map;
-import static Clases.Categoria.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static CatalogoTuristico.Categoria.*;
 
 public class CatalogoTuristicoTest {
     ServicioIndividual servicio1; // 2000, desc 10% (final 1800)
@@ -17,23 +19,34 @@ public class CatalogoTuristicoTest {
     ServicioIndividual servicio3; // 2500, desc 20% (final 2000)
     ServicioIndividual servicio4; // 1000, sin descuento
     ServicioIndividual servicio5;
+    ServicioIndividual servicio6;
     Catalogo catalogo;
     Atributo atributo1;
+    Atributo atributo2;
+    Atributo atributo3;
+    Atributo atributo4;
+
 
     @BeforeEach
     void setUp() {
         servicio1 = new ServicioIndividual(123, "Noche De Hotel Central", "habitacion para una persona",
                 "proveedor", 0.1f, 2000f, ALOJAMIENTO);
         servicio2 = new ServicioIndividual(124, "Excursion museo", "excursion guiada",
-                "proveedor", 0.0f, 2200f, EXCURSIÓN);
+                "proveedor", 0.0f, 2200f, EXCURSION);
         servicio3 = new ServicioIndividual(125, "alquiler de auto", "auto alta gama",
-                "proveedor", 0.2f, 2500f, EXCURSIÓN);
+                "proveedor", 0.2f, 2500f, EXCURSION);
         servicio4 = new ServicioIndividual(126, "traslado aeropueRto", "traslado larga distancia",
                 "proveedor", 0.0f, 1000f, ALQUILERAUTO);
         servicio5 = new ServicioIndividual(null,null,"suite para 2 personas","proveedor",
                 0.0f,1000f,ALOJAMIENTO);
+        servicio6 = new ServicioIndividual(null,"escapadaFinDeSemana","escapadaACordoba","cordobaviajes",
+                0.1f,500f,VUELO);
         catalogo = new Catalogo();
-        atributo1 = new Atributo("capacidadMaxima",true,10);
+        atributo1 = new AtributoNumerico("capacidadMaxima",false,10);
+        atributo2 = new AtributoDeTexto("PoliticaMascotas",false,"no se admiten");
+        atributo3 = new AtributoDeTipoFecha("fechaSalida",false, LocalDate.of(2026,05,10));
+        atributo4 = new AtributoTipoBooleano("cancelacion gratis",false,true);
+
 
     }
     // TEST PRODUCTOS INDIVIDUALES
@@ -58,7 +71,7 @@ public class CatalogoTuristicoTest {
         assertEquals("excursion guiada", servicio2.getDescripcion());
         assertEquals("proveedor", servicio2.getProveedor());
         assertEquals(2200f, servicio2.getPrecioBase());
-        assertEquals(EXCURSIÓN, servicio2.getCategoria());
+        assertEquals(EXCURSION, servicio2.getCategoria());
         assertEquals(0.0f, servicio2.getDescuento());
         assertEquals(2200f, servicio2.getPrecioFinal());
 
@@ -88,8 +101,8 @@ public class CatalogoTuristicoTest {
         assertEquals(4000f, paquete3.getPrecioBase());
         assertEquals(3600f, paquete3.getPrecioFinal());
     }
-    // TESTS DE PAQUETES ANIDADOS (paquetes que contienen otros paquetes)
 
+    // TESTS DE PAQUETES ANIDADOS (paquetes que contienen otros paquetes)
 
     @Test
     void test006_paqueteConDescuentoQueContieneOtroPaqueteConDescuento() {
@@ -113,25 +126,56 @@ public class CatalogoTuristicoTest {
 
     // TEST ATRIBUTOS EXTRA
     @Test
-    void test008_seAgreganAtributosExtraAUnServicioIndividualYRetornaValoresCorrectos(){
+    void test008_seAgregaAtributoNumericoAUnServicioIndividualYRetornaValoresCorrectos(){
         servicio1.agregarAtributoExtra(atributo1);
         assertEquals("capacidadMaxima",atributo1.getNombre());
-        assertTrue(atributo1.isObligatorio());
-    }
-    @Test
-    void test009seValidaUnServicioQueNoTieneAtributosExtra(){
-        assertTrue(servicio2.getNombre() != null);
-        assertTrue(servicio2.getId() != null);
+        assertFalse(atributo1.isObligatorio());
+        assertEquals(10,atributo1.getValor());
     }
 
     @Test
-    void test010seIntentaValidarUnServicioQueNoTieneAtributosExtra(){
-        assertThrows(RuntimeException.class, () -> { servicio5.validarAtributos();});
+    void test009_seAgregaAtributoDeTextoAUnServicioIndividualYRetornaValoresCorrectos(){
+        servicio1.agregarAtributoExtra(atributo2);
+        assertEquals("PoliticaMascotas",atributo1.getNombre());
+        assertFalse(atributo1.isObligatorio());
+        assertEquals("no se admiten",atributo1.getValor());
     }
-//   @Test
-//    void test010seValidaUnServicioQueTieneAtributosExtra(){
-//      servicio4.agregarAtributoExtra(Atributo,true,30);
-//       servicio4.validarAtributos();
-//   }
+
+    @Test
+    void test010_seAgregaAtributoDeTipoFechaAUnServicioIndividualYRetornaValoresCorrectos(){
+        servicio1.agregarAtributoExtra(atributo3);
+        assertEquals("fechaSalida",atributo3.getNombre());
+        assertFalse(atributo1.isObligatorio());
+        assertEquals(LocalDate.of(2026,05,10),atributo1.getValor());
+    }
+    @Test
+    void test011_seAgregaAtributoDeTipoBooleanoAUnServicioIndividualYRetornaValoresCorrectos(){
+        servicio1.agregarAtributoExtra(atributo1);
+        assertEquals("cancelacion gratis",atributo1.getNombre());
+        assertFalse(atributo1.isObligatorio());
+        assertEquals(true,atributo1.getValor());
+    }
+    @Test
+    void test012_seValidaUnServicioQueNoTieneAtributosExtra(){
+        assertDoesNotThrow( () -> servicio1.validarAtributos());
+    }
+
+    @Test
+    void test013seIntentaValidarUnServicioQueNoTieneAtributosExtra(){
+        assertThrows(ServicioInvalidoPorAtributoObligatorio.class, () -> servicio5.validarAtributos());
+    }
+
+    @Test
+    void test014_seValidaUnServicioQueTieneAtributoExtra(){
+        servicio2.agregarAtributoExtra(atributo1);
+        assertDoesNotThrow( () -> servicio2.validarAtributos());
+    }
+
+    @Test
+    void test015_seIntentaValidarUnServicioQueTieneAtributoExtra(){
+        Atributo atributo6 = new AtributoNumerico("capacidad",false,"dos");
+        servicio1.agregarAtributoExtra(atributo6);
+        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.validarAtributos());
+    }
 
 }

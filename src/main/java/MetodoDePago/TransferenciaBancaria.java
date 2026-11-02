@@ -1,4 +1,4 @@
-package Clases.MetodoDePago;
+package MetodoDePago;
 
 public class TransferenciaBancaria extends MetodoDePago{
 
