@@ -136,24 +136,24 @@ public class CatalogoTuristicoTest {
     @Test
     void test009_seAgregaAtributoDeTextoAUnServicioIndividualYRetornaValoresCorrectos(){
         servicio1.agregarAtributoExtra(atributo2);
-        assertEquals("PoliticaMascotas",atributo1.getNombre());
-        assertFalse(atributo1.isObligatorio());
-        assertEquals("no se admiten",atributo1.getValor());
+        assertEquals("PoliticaMascotas",atributo2.getNombre());
+        assertFalse(atributo2.isObligatorio());
+        assertEquals("no se admiten",atributo2.getValor());
     }
 
     @Test
     void test010_seAgregaAtributoDeTipoFechaAUnServicioIndividualYRetornaValoresCorrectos(){
         servicio1.agregarAtributoExtra(atributo3);
         assertEquals("fechaSalida",atributo3.getNombre());
-        assertFalse(atributo1.isObligatorio());
-        assertEquals(LocalDate.of(2026,05,10),atributo1.getValor());
+        assertFalse(atributo3.isObligatorio());
+        assertEquals(LocalDate.of(2026,05,10),atributo3.getValor());
     }
     @Test
     void test011_seAgregaAtributoDeTipoBooleanoAUnServicioIndividualYRetornaValoresCorrectos(){
-        servicio1.agregarAtributoExtra(atributo1);
-        assertEquals("cancelacion gratis",atributo1.getNombre());
-        assertFalse(atributo1.isObligatorio());
-        assertEquals(true,atributo1.getValor());
+        servicio1.agregarAtributoExtra(atributo4);
+        assertEquals("cancelacion gratis",atributo4.getNombre());
+        assertFalse(atributo4.isObligatorio());
+        assertEquals(true,atributo4.getValor());
     }
     @Test
     void test012_seValidaUnServicioQueNoTieneAtributosExtra(){

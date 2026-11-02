@@ -1,5 +1,5 @@
 package MetodosDeTraslado;
-import main.java.Clases.Reserva;
+import Clases.Reserva;
 
 
 public class TrasladoVIP {

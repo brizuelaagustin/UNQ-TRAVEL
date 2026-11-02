@@ -2,8 +2,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import main.java.Clases.*;
-import main.java.Clases.MetodosDeTraslado.*;
+import Clases.Reserva;
+import MetodosDeTraslado.*;
 
 public class MetodosDeTrasladoTest {
 
