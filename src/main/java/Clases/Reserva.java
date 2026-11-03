@@ -18,7 +18,7 @@ import java.util.Map;
 public class Reserva {
     private EstadoDeReserva estadoDeReserva;
     private MetodoDeTraslado estrategiaTraslado;
-    private Map<ServicioTuristico,Integer> servicios = new HashMap<>();
+    private Map<ServicioTuristico,Integer> servicios;
     private Integer cuposDisponibles;
     private Integer tasaDeReserva;
     private Integer cantidadPasajeros;
@@ -26,6 +26,21 @@ public class Reserva {
     private MetodoDePago metodoDePago;
     private Catalogo catalogo;
     private Cliente cliente;
+
+    //Constructor
+    public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cupos, Integer tasa, Integer cantPasajeros,
+                   Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente){
+        this.estadoDeReserva=reserva;
+        this.estrategiaTraslado=traslado;
+        this.servicios=new HashMap<>();
+        this.cuposDisponibles=cupos;
+        this.tasaDeReserva=tasa;
+        this.cantidadPasajeros=cantPasajeros;
+        this.direccionDestino=direccion;
+        this.metodoDePago=metodoPago;
+        this.catalogo=catalogo;
+        this.cliente=cliente;
+    }
 
     public void confirmarReserva(){
         estadoDeReserva.confirmarReserva(this);
@@ -60,7 +75,8 @@ public class Reserva {
     }
 
     public void actualizarReserva(EstadoDeReserva nuevoEstado){
-          estadoDeReserva = nuevoEstado;
+
+        estadoDeReserva = nuevoEstado;
     }
 
     public void agregarServicio(ServicioTuristico servicio,Integer cantidad){

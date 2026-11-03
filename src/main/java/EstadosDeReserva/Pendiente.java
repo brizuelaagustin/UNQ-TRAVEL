@@ -7,6 +7,7 @@ import Excepciones.reservas.reservaPendienteAFinalizada;
 import Excepciones.reservas.reservaPendienteAenCurso;
 
 public class Pendiente implements EstadoDeReserva {
+
     public void confirmarReserva(Reserva reserva) {
         reserva.actualizarReserva(new Confirmada());
     }
