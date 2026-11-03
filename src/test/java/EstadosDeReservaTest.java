@@ -7,9 +7,13 @@ import MetodoDePago.MetodoDePago;
 import MetodosDeTraslado.Direccion;
 import MetodosDeTraslado.MetodoDeTraslado;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.Mockito.mock;
 
 public class EstadosDeReservaTest {
 
@@ -29,6 +33,8 @@ public class EstadosDeReservaTest {
     EstadoDeReserva estadoFinalizado;
     EstadoDeReserva estadoCancelado;
 
+    Reserva reservaPendiente;
+
     @BeforeEach
     void setup(){
         estado=         mock(EstadoDeReserva.class);
@@ -45,12 +51,20 @@ public class EstadosDeReservaTest {
         estadoEnCurso=      new EnCurso();
         estadoFinalizado=   new Finalizada();
         estadoCancelado=    new Cancelada();
+
+        reservaPendiente= new Reserva(estadoPendiente, metodoTraslado, 10, 20, 5, direccion, metodoPago, catalogo, cliente);
     }
 
 
 
 
     //sintacticamente como testeo que se delega en el estado?
+
+    @Test
+    void test001_UnaReservaPendientePuedePasarAConfirmada(){
+            reservaPendiente.confirmarReserva();
+            assertInstanceOf(Confirmada.class, reservaPendiente.getEstadoDeReserva());
+    }
 
 
 }
