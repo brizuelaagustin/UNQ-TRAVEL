@@ -17,15 +17,15 @@ public class Pendiente implements EstadoDeReserva {
     }
 
     public void checkInReserva(Reserva reserva) {
-        throw new reservaPendienteACheckIn("Operacion invalida, no es posible hacer checkin sobre una reserva pendiente");
+        throw new RuntimeException("Operacion invalida, no es posible hacer checkin sobre una reserva pendiente");
     }
 
     public void enCursoReserva(Reserva reserva) {
-        throw new reservaPendienteAenCurso("Operacion invalida, no es posible hacer en curso sobre una reserva pendiente");
+        throw new RuntimeException("Operacion invalida, no es posible hacer en curso sobre una reserva pendiente");
     }
 
     public void finalizarReserva(Reserva reserva) {
-        throw new reservaPendienteAFinalizada("Operacion invalida, no es posible finalizar una reserva pendiente");
+        throw new RuntimeException("Operacion invalida, no es posible finalizar una reserva pendiente");
     }
 
     @Override

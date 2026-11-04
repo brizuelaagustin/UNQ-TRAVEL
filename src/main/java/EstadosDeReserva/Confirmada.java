@@ -9,7 +9,7 @@ import Excepciones.reservas.reservaConfirmadaAenCurso;
 
 public class Confirmada implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva){
-        throw new reservaConfirmadaAConfirmada("Operacion invalida, la reserva ya esta confirmada");
+        throw new RuntimeException("Operacion invalida, la reserva ya esta confirmada");
     }
     public void cancelarReserva(Reserva reserva){
         reserva.actualizarReserva(new Cancelada());
@@ -18,19 +18,19 @@ public class Confirmada implements EstadoDeReserva {
         reserva.actualizarReserva(new CheckIn());
     }
     public void enCursoReserva(Reserva reserva){
-        throw new reservaConfirmadaAenCurso("Operacion invalida, no es posible poner en curso una reserva confirmada");
+        throw new RuntimeException("Operacion invalida, no es posible poner en curso una reserva confirmada");
     }
     public void finalizarReserva(Reserva reserva){
-        throw new reservaConfirmadaAFinalizada("Operacion invalida, no es posible finalizar una reserva confirmada");
+        throw new RuntimeException("Operacion invalida, no es posible finalizar una reserva confirmada");
     }
 
     @Override
     public void agregarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
-        throw new OperacionInvalidaException("no se pueden agregar servicios en este estado");
+        throw new RuntimeException("no se pueden agregar servicios en este estado");
     }
 
     @Override
     public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
-        throw new OperacionInvalidaException("no se pueden quitar servicios en este estado");
+        throw new RuntimeException("no se pueden quitar servicios en este estado");
     }
 }
