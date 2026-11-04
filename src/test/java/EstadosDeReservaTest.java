@@ -21,7 +21,6 @@ import static org.mockito.Mockito.mock;
 
 public class EstadosDeReservaTest {
 
-    //hay que hacer mockito
     Reserva reserva;
     EstadoDeReserva estado;
     MetodoDeTraslado metodoTraslado;
@@ -30,6 +29,7 @@ public class EstadosDeReservaTest {
     Catalogo catalogo;
     Cliente cliente;
     NotificadorDeReserva notificador;
+    ServicioTuristico servicio;
 
     EstadoDeReserva estadoPendiente;
     EstadoDeReserva estadoConfirmado;
@@ -54,6 +54,7 @@ public class EstadosDeReservaTest {
         catalogo = mock(Catalogo.class);
         cliente = mock(Cliente.class);
         notificador = mock(NotificadorDeReserva.class);
+        servicio = mock(ServicioTuristico.class);
         reserva = new Reserva(estado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
 
         estadoPendiente = new Pendiente();
@@ -306,6 +307,86 @@ public class EstadosDeReservaTest {
             reservaEnCurso.enCursoReserva();
         } catch (OperacionInvalidaException e) {
             assertEquals(e.getMessage(), "Operacion invalida, la operacion ya esta en curso");
+        }
+    }
+    @Test
+    void test031_UnaReservaCanceladaNoPuedeAgregarUnServicio(){
+        try {
+            reservaCancelada.agregarServicio(servicio, 1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden agregar servicios en este estado");
+        }
+    }
+    @Test
+    void test032_UnaReservaCanceladaNoPuedeQuitarUnServicio(){
+        try {
+            reservaCancelada.quitarServicio(servicio, 1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden quitar servicios en este estado");
+        }
+    }
+    @Test
+    void test033_UnaReservaFinalizadaNoPuedeAgregarUnServicio(){
+        try {
+            reservaFinalizada.agregarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden agregar servicios en este estado");
+        }
+    }
+    @Test
+    void test034_UnaReservaFinalizadaNoPuedeQuitarUnServicio(){
+        try {
+            reservaFinalizada.quitarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden quitar servicios en este estado");
+        }
+    }
+    @Test
+    void test035_UnaReservaConfirmadaNoPuedeAgregarUnServicio(){
+        try {
+            reservaConfirmada.agregarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden agregar servicios en este estado");
+        }
+    }
+    @Test
+    void test036_UnaReservaConfirmadaNoPuedeQuitarUnServicio(){
+        try {
+            reservaConfirmada.quitarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden quitar servicios en este estado");
+        }
+    }
+    @Test
+    void test037_UnaReservaEnCheckInNoPuedeAgregarUnServicio(){
+        try {
+            reservaCheckIn.agregarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden agregar servicios en este estado");
+        }
+    }
+    @Test
+    void test038_UnaReservaEnCheckInNoPuedeQuitarUnServicio(){
+        try {
+            reservaCheckIn.quitarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden quitar servicios en este estado");
+        }
+    }
+    @Test
+    void test039_UnaReservaEnCursoNoPuedeAgregarUnServicio(){
+        try {
+            reservaEnCurso.agregarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden agregar servicios en este estado");
+        }
+    }
+    @Test
+    void test040_UnaReservaEnCursoNoPuedeQuitarUnServicio(){
+        try {
+            reservaEnCurso.quitarServicio(servicio,1);
+        } catch (OperacionInvalidaException e) {
+            assertEquals(e.getMessage(),"no se pueden quitar servicios en este estado");
         }
     }
 }

@@ -24,12 +24,12 @@ public class Confirmada implements EstadoDeReserva {
 
     @Override
     public void agregarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
-        throw new RuntimeException("no se pueden agregar servicios en este estado");
+        throw new OperacionInvalidaException("no se pueden agregar servicios en este estado");
     }
 
     @Override
     public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
-        throw new RuntimeException("no se pueden quitar servicios en este estado");
+        throw new OperacionInvalidaException("no se pueden quitar servicios en este estado");
     }
 
     @Override
