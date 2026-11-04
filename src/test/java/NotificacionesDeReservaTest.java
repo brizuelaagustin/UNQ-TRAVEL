@@ -43,7 +43,7 @@ public class NotificacionesDeReservaTest {
 
         trasladoEstandar = mock(TrasladoEstandar.class);
         direccion = mock(Direccion.class);
-        transferenciaBancaria = mock(TransferenciaBancaria.class);
+        transferenciaBancaria = mock(MetodoDePago.class);
         mockCatalogo = mock(Catalogo.class);
 
         reserva = new Reserva(estadoDeReserva,trasladoEstandar,1, direccion,transferenciaBancaria,mockCatalogo,cliente1
@@ -54,6 +54,5 @@ public class NotificacionesDeReservaTest {
         reserva.getNotificadorDeReserva().registrarObservador(fidelizacion);
     }
 
-    @Test
-    void
+
 }

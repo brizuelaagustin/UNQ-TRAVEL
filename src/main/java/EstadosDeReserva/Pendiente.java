@@ -2,9 +2,7 @@ package EstadosDeReserva;
 
 import CatalogoTuristico.ServicioTuristico;
 import Clases.Reserva;
-import Excepciones.reservas.reservaPendienteACheckIn;
-import Excepciones.reservas.reservaPendienteAFinalizada;
-import Excepciones.reservas.reservaPendienteAenCurso;
+import Excepciones.reservas.OperacionInvalidaException;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Pendiente implements EstadoDeReserva {
@@ -18,15 +16,15 @@ public class Pendiente implements EstadoDeReserva {
     }
 
     public void checkInReserva(Reserva reserva) {
-        throw new RuntimeException("Operacion invalida, no es posible hacer checkin sobre una reserva pendiente");
+        throw new OperacionInvalidaException("Operacion invalida, no es posible hacer checkin sobre una reserva pendiente");
     }
 
     public void enCursoReserva(Reserva reserva) {
-        throw new RuntimeException("Operacion invalida, no es posible hacer en curso sobre una reserva pendiente");
+        throw new OperacionInvalidaException("Operacion invalida, no es posible hacer en curso sobre una reserva pendiente");
     }
 
     public void finalizarReserva(Reserva reserva) {
-        throw new RuntimeException("Operacion invalida, no es posible finalizar una reserva pendiente");
+        throw new OperacionInvalidaException("Operacion invalida, no es posible finalizar una reserva pendiente");
     }
 
     @Override

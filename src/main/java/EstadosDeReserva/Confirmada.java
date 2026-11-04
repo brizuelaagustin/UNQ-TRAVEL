@@ -3,14 +3,11 @@ package EstadosDeReserva;
 import CatalogoTuristico.ServicioTuristico;
 import Excepciones.reservas.OperacionInvalidaException;
 import Clases.Reserva;
-import Excepciones.reservas.reservaConfirmadaAConfirmada;
-import Excepciones.reservas.reservaConfirmadaAFinalizada;
-import Excepciones.reservas.reservaConfirmadaAenCurso;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Confirmada implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva){
-        throw new RuntimeException("Operacion invalida, la reserva ya esta confirmada");
+        throw new OperacionInvalidaException("Operacion invalida, la reserva ya esta confirmada");
     }
     public void cancelarReserva(Reserva reserva){
         reserva.actualizarReserva(new Cancelada());
@@ -19,10 +16,10 @@ public class Confirmada implements EstadoDeReserva {
         reserva.actualizarReserva(new CheckIn());
     }
     public void enCursoReserva(Reserva reserva){
-        throw new RuntimeException("Operacion invalida, no es posible poner en curso una reserva confirmada");
+        throw new OperacionInvalidaException("Operacion invalida, no es posible poner en curso una reserva confirmada");
     }
     public void finalizarReserva(Reserva reserva){
-        throw new RuntimeException("Operacion invalida, no es posible finalizar una reserva confirmada");
+        throw new OperacionInvalidaException("Operacion invalida, no es posible finalizar una reserva confirmada");
     }
 
     @Override
