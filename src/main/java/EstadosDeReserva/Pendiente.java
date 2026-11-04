@@ -5,6 +5,7 @@ import Clases.Reserva;
 import Excepciones.reservas.reservaPendienteACheckIn;
 import Excepciones.reservas.reservaPendienteAFinalizada;
 import Excepciones.reservas.reservaPendienteAenCurso;
+import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Pendiente implements EstadoDeReserva {
 
@@ -36,6 +37,11 @@ public class Pendiente implements EstadoDeReserva {
     @Override
     public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
         reserva.removerServicio(servicio,cantidad);
+    }
+
+    @Override
+    public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
+        //notificador de email no actua sobre este estado
     }
 
 }

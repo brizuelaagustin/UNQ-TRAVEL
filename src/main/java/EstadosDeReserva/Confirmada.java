@@ -6,6 +6,7 @@ import Clases.Reserva;
 import Excepciones.reservas.reservaConfirmadaAConfirmada;
 import Excepciones.reservas.reservaConfirmadaAFinalizada;
 import Excepciones.reservas.reservaConfirmadaAenCurso;
+import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Confirmada implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva){
@@ -32,5 +33,11 @@ public class Confirmada implements EstadoDeReserva {
     @Override
     public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
         throw new RuntimeException("no se pueden quitar servicios en este estado");
+    }
+
+    @Override
+    public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
+        notificadorDeEmail.getMailSender().enviarMail(reserva.getCliente().getEmail(),"Actualizacion de reserva",
+                "reserva pasa a " + this, null);
     }
 }

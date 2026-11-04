@@ -4,6 +4,7 @@ import CatalogoTuristico.ServicioTuristico;
 import Clases.Reserva;
 import Excepciones.reservas.OperacionInvalidaException;
 import Excepciones.reservas.reservaFinalizada;
+import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Finalizada implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva){
@@ -30,5 +31,11 @@ public class Finalizada implements EstadoDeReserva {
     @Override
     public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
         throw new OperacionInvalidaException("no se pueden quitar servicios en este estado");
+    }
+
+    @Override
+    public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
+        notificadorDeEmail.getMailSender().enviarMail(reserva.getCliente().getEmail(),"Actualizacion de reserva",
+                                                        "reserva pasa a " + this, null);
     }
 }

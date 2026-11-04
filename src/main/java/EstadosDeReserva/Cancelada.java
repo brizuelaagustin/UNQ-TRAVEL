@@ -4,6 +4,7 @@ import CatalogoTuristico.ServicioTuristico;
 import Excepciones.reservas.OperacionInvalidaException;
 import Clases.Reserva;
 import Excepciones.reservas.reservaCancelada;
+import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Cancelada implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva){
@@ -30,5 +31,10 @@ public class Cancelada implements EstadoDeReserva {
     @Override
     public void quitarServicio(Reserva reserva, ServicioTuristico servicio, Integer cantidad) {
         throw new OperacionInvalidaException("no se pueden quitar servicios en este estado");
+    }
+
+    @Override
+    public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) { //notificador de email no actua sobre este estado
+
     }
 }
