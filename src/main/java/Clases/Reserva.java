@@ -5,6 +5,7 @@ import Excepciones.reservas.NoHayStockException;
 import Excepciones.reservas.ServicioNoEncontradoException;
 import MetodoDePago.MetodoDePago;
 import EstadosDeReserva.EstadoDeReserva;
+import NotificacionesDeReserva.NotificadorDeEmail;
 import NotificacionesDeReserva.NotificadorDeReserva;
 import lombok.Getter;
 import MetodosDeTraslado.Direccion;
@@ -20,8 +21,6 @@ public class Reserva {
     private EstadoDeReserva estadoDeReserva;
     private MetodoDeTraslado estrategiaTraslado;
     private Map<ServicioTuristico,Integer> servicios;
-    private Integer cuposDisponibles;
-    private Integer tasaDeReserva;
     private Integer cantidadPasajeros;
     private Direccion direccionDestino;
     private MetodoDePago metodoDePago;
@@ -30,18 +29,17 @@ public class Reserva {
     private NotificadorDeReserva notificadorDeReserva;
 
     //Constructor
-    public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cupos, Integer tasa, Integer cantPasajeros,
-                   Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente){
+    public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cantPasajeros,
+                   Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente, NotificadorDeReserva notificadorDeReserva){
         this.estadoDeReserva=reserva;
         this.estrategiaTraslado=traslado;
         this.servicios=new HashMap<>();
-        this.cuposDisponibles=cupos;
-        this.tasaDeReserva=tasa;
         this.cantidadPasajeros=cantPasajeros;
         this.direccionDestino=direccion;
         this.metodoDePago=metodoPago;
         this.catalogo=catalogo;
         this.cliente=cliente;
+        this.notificadorDeReserva = notificadorDeReserva;
     }
 
     public void confirmarReserva(){
