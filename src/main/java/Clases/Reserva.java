@@ -5,6 +5,7 @@ import Excepciones.reservas.NoHayStockException;
 import Excepciones.reservas.ServicioNoEncontradoException;
 import MetodoDePago.MetodoDePago;
 import EstadosDeReserva.EstadoDeReserva;
+import NotificacionesDeReserva.NotificadorDeReserva;
 import lombok.Getter;
 import MetodosDeTraslado.Direccion;
 import MetodosDeTraslado.MetodoDeTraslado;
@@ -26,6 +27,7 @@ public class Reserva {
     private MetodoDePago metodoDePago;
     private Catalogo catalogo;
     private Cliente cliente;
+    private NotificadorDeReserva notificadorDeReserva;
 
     //Constructor
     public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cupos, Integer tasa, Integer cantPasajeros,
