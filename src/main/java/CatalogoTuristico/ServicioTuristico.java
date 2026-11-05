@@ -9,5 +9,8 @@ public abstract class ServicioTuristico {
 
     public abstract float getPrecioBase();
     public abstract float getPrecioFinal();
+    public abstract Boolean perteneceACategoria(Categoria categoria);
+    public abstract boolean tieneDisponibilidad();
+
 
 }

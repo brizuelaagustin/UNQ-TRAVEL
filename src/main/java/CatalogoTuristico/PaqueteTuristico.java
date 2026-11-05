@@ -31,4 +31,23 @@ public class PaqueteTuristico extends  ServicioTuristico {
         }
         return totalBase - (totalBase * descuento);
     }
+
+    public Boolean perteneceACategoria(Categoria categoria){
+        for (Map.Entry<ServicioTuristico, Integer> entry : paquetes.entrySet()) {
+            if (entry.getKey().perteneceACategoria(categoria)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean tieneDisponibilidad() {
+        for (Map.Entry<ServicioTuristico, Integer> entry : paquetes.entrySet()) {
+            if (!entry.getKey().tieneDisponibilidad()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

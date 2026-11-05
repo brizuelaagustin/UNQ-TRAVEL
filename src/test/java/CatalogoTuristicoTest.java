@@ -30,17 +30,17 @@ public class CatalogoTuristicoTest {
     @BeforeEach
     void setUp() {
         servicio1 = new ServicioIndividual(123, "Noche De Hotel Central", "habitacion para una persona",
-                "proveedor", 0.1f, 2000f, ALOJAMIENTO);
+                "proveedor", 0.1f, 2000f, ALOJAMIENTO, 2);
         servicio2 = new ServicioIndividual(124, "Excursion museo", "excursion guiada",
-                "proveedor", 0.0f, 2200f, EXCURSION);
+                "proveedor", 0.0f, 2200f, EXCURSION, 3);
         servicio3 = new ServicioIndividual(125, "alquiler de auto", "auto alta gama",
-                "proveedor", 0.2f, 2500f, EXCURSION);
+                "proveedor", 0.2f, 2500f, EXCURSION, 4);
         servicio4 = new ServicioIndividual(126, "traslado aeropueRto", "traslado larga distancia",
-                "proveedor", 0.0f, 1000f, ALQUILERAUTO);
+                "proveedor", 0.0f, 1000f, ALQUILERAUTO, 0);
         servicio5 = new ServicioIndividual(null,null,"suite para 2 personas","proveedor",
-                0.0f,1000f,ALOJAMIENTO);
+                0.0f,1000f,ALOJAMIENTO, 8);
         servicio6 = new ServicioIndividual(null,"escapadaFinDeSemana","escapadaACordoba","cordobaviajes",
-                0.1f,500f,VUELO);
+                0.1f,500f,VUELO, 1);
         catalogo = new Catalogo();
         atributo1 = new AtributoNumerico("capacidadMaxima",false,10);
         atributo2 = new AtributoDeTexto("PoliticaMascotas",false,"no se admiten");
