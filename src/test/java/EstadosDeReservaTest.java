@@ -3,9 +3,7 @@ import CatalogoTuristico.ServicioTuristico;
 import Clases.Cliente;
 import Clases.Reserva;
 import EstadosDeReserva.*;
-import Excepciones.reservas.reservaFinalizada;
-import Excepciones.reservas.reservaCancelada;
-import Excepciones.reservas.OperacionInvalidaException;
+import Excepciones.reservas.*;
 import MetodoDePago.MetodoDePago;
 import MetodosDeTraslado.Direccion;
 import MetodosDeTraslado.MetodoDeTraslado;
@@ -73,7 +71,6 @@ public class EstadosDeReservaTest {
     }
 
 
-    //sintacticamente como testeo que se delega en el estado?
 
     @Test
     void test001_UnaReservaPendientePuedePasarAConfirmada() {
@@ -389,4 +386,33 @@ public class EstadosDeReservaTest {
             assertEquals(e.getMessage(),"no se pueden quitar servicios en este estado");
         }
     }
+    @Test
+    void test041_UnaReservaPendienteNoPuedeAgregarUnServicioSiEsteNoExisteEnElCatalogo(){
+        try {
+            reservaPendiente.agregarServicio(servicio,1);
+        } catch (ServicioNoEncontradoException e) {
+            assertEquals(e.getMessage(),"No se puede agregar, porque no existe en el catalogo");
+        }
+    }
+    @Test
+    void test042_UnaReservaPendienteNoPuedeAgregarUnServicioSiNoHayStockEnElCatalogo(){
+        Catalogo nuevoCatalogo = new Catalogo();
+        Reserva reservaPendiente2 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo, cliente, notificador);
+        nuevoCatalogo.registrarNuevoServicio(servicio);
+        nuevoCatalogo.agregarServicioDisponible(servicio,0);
+        try {
+            reservaPendiente2.agregarServicio(servicio,1);
+        } catch (NoHayStockException e) {
+            assertEquals(e.getMessage(),"No se pueden agregar, no hay stock suficiente");
+        }
+    }
+//    @Test
+//    void test043_UnaReservaPuedeAgregarUnServicio(){
+//        Catalogo nuevoCatalogo2 = new Catalogo();
+//        Reserva reservaPendiente3 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo2, cliente, notificador);
+//        nuevoCatalogo2.registrarNuevoServicio(servicio);
+//        nuevoCatalogo2.agregarServicioDisponible(servicio,3);
+//        reservaPendiente3.agregarServicio(servicio,2);
+//
+//    }
 }

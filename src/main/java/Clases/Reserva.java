@@ -13,6 +13,7 @@ import MetodosDeTraslado.MetodoDeTraslado;
 
 import CatalogoTuristico.Catalogo;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +28,8 @@ public class Reserva {
     private Catalogo catalogo;
     private Cliente cliente;
     private NotificadorDeReserva notificadorDeReserva;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
 
     //Constructor
     public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cantPasajeros,
@@ -84,7 +87,7 @@ public class Reserva {
     }
 
     public void incluirServicio(ServicioTuristico servicio, Integer cantidad){
-        if(!catalogo.getServicios().contains(servicio)){
+        if(!(catalogo.getServicios().contains(servicio))){
             throw new ServicioNoEncontradoException("No se puede agregar, porque no existe en el catalogo");
         }
         if(!catalogo.tieneStockParaReserva(servicio,cantidad)) {
