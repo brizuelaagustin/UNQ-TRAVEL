@@ -1,9 +1,10 @@
 package CatalogoTuristico;
 
-import java.time.LocalDate;
+import lombok.Getter;
+
 import java.util.HashMap;
 import java.util.Map;
-
+@Getter
 public class PaqueteTuristico extends  ServicioTuristico {
     private Map<ServicioTuristico,Integer> paquetes;
     private float descuento;
@@ -12,7 +13,7 @@ public class PaqueteTuristico extends  ServicioTuristico {
                             Map<ServicioTuristico, Integer> items, float descuento) {
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.paquetes = new HashMap<>(items); // copia: Map.of es inmutable
+        this.paquetes = new HashMap<>(items);
         this.descuento = descuento;
     }
 

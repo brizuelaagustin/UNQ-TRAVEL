@@ -78,7 +78,6 @@ public class Reserva {
     }
 
     public void actualizarReserva(EstadoDeReserva nuevoEstado){
-
         estadoDeReserva = nuevoEstado;
     }
 

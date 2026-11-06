@@ -6,6 +6,7 @@ import lombok.Getter;
 public abstract class ServicioTuristico {
     public String nombre;
     public String descripcion;
+    private CronogramaServicio cronogramaServicio;
 
     public abstract float getPrecioBase();
     public abstract float getPrecioFinal();

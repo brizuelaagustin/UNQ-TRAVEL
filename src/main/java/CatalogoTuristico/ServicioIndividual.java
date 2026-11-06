@@ -16,9 +16,9 @@ public class ServicioIndividual extends ServicioTuristico{
     private float descuento;
     private float precioBase;
     private List<Atributo> atributosExtra = new ArrayList<>();
-    private Integer cupoDisponible;
 
-    public ServicioIndividual(Integer id, String nombre, String descripcion, String proveedor, float descuento, float preciobase, Categoria categoria, Integer cupoDisponible) {
+    public ServicioIndividual(Integer id, String nombre, String descripcion, String proveedor, float descuento,
+                              float preciobase, Categoria categoria, CronogramaServicio cronogramaServicio) {
         this.id = id;
         this.nombre = nombre;
         this.descuento = descuento;
@@ -26,7 +26,7 @@ public class ServicioIndividual extends ServicioTuristico{
         this.proveedor = proveedor;
         this.precioBase = preciobase;
         this.categoria = categoria;
-        this.cupoDisponible = cupoDisponible;
+        this.cronogramaServicio = cronogramaServicio;
     }
     public float getPrecioFinal(){
         return this.precioBase -(this.precioBase * descuento);
