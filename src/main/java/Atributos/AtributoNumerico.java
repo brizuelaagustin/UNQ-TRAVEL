@@ -7,6 +7,6 @@ public class AtributoNumerico extends Atributo{
 
     @Override
     protected boolean tipoCorrecto(Object valor) {
-        return valor Integer.valueOf("5") Number; //algo que dijo el profe
+        return valor Integer.valueOf(valor) Number; //algo que dijo el profe
     }
 }

@@ -31,9 +31,9 @@ public class Reserva {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
 
-    //Constructor
     public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cantPasajeros,
-                   Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente, NotificadorDeReserva notificadorDeReserva){
+                   Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente,
+                   NotificadorDeReserva notificadorDeReserva, LocalDate fechaInicio, LocalDate fechaFin){
         this.estadoDeReserva=reserva;
         this.estrategiaTraslado=traslado;
         this.servicios=new HashMap<>();
@@ -43,6 +43,8 @@ public class Reserva {
         this.catalogo=catalogo;
         this.cliente=cliente;
         this.notificadorDeReserva = notificadorDeReserva;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
     }
 
     public void confirmarReserva(){
@@ -85,15 +87,16 @@ public class Reserva {
         estadoDeReserva.agregarServicio(this,servicio,cantidad);
     }
 
-    public void incluirServicio(ServicioTuristico servicio, Integer cantidad){
-        if(!(catalogo.getServicios().contains(servicio))){
+    public void incluirServicio(ServicioTuristico servicio, Integer cantidadDeCupos){
+        if(!(catalogo.tieneServicio(servicio))){
             throw new ServicioNoEncontradoException("No se puede agregar, porque no existe en el catalogo");
         }
-        if(!catalogo.tieneStockParaReserva(servicio,cantidad)) {
+        if(!catalogo.tieneStockParaReserva(servicio,cantidadDeCupos,fechaInicio,fechaFin)) {
             throw new NoHayStockException("No se pueden agregar, no hay stock suficiente");
         }
-        int cantidadActual = catalogo.getServiciosDisponibles().getOrDefault(servicio, 0);
-        servicios.put(servicio,cantidadActual + cantidad);
+        servicio.quitarCupos(cantidadDeCupos, fechaInicio, fechaFin);
+        int cantidadAnterior = servicios.getOrDefault(servicio, 0);
+        servicios.put(servicio,cantidadAnterior + cantidadDeCupos);
     }
     public void quitarServicio(ServicioTuristico servicio , Integer cantidad){
         estadoDeReserva.quitarServicio(this, servicio, cantidad);
@@ -106,6 +109,7 @@ public class Reserva {
         int cantidadActual = servicios.getOrDefault(servicio,0);
         if(cantidadActual > cantidad){
             servicios.put(servicio, cantidadActual - cantidad);
+            servicio.devolverCupos(cantidad, fechaInicio, fechaFin);
         }else{
             throw new NoHayStockException("No hay esa cantidad de servicios suficientes para remover");
         }

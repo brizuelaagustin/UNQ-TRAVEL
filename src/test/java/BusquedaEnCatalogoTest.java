@@ -1,4 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,20 +31,21 @@ public class BusquedaEnCatalogoTest {
     ServicioTuristico museo;   // EXCURSION, $4.000, sin cupo
     ServicioTuristico vuelo;   // VUELO, $80.000, con cupo
     ServicioTuristico pack;    // hotel + museo, 10% de descuento, no disponible (museo sin cupo)
+    CronogramaServicio cronogramaServicio;
 
     @BeforeEach
     void setUp() {
         hotel = new ServicioIndividual(1, "Hotel Central", "Hotel en el centro", "Operador A",
-                0f, 15000f, Categoria.ALOJAMIENTO, 3);
+                0f, 15000f, Categoria.ALOJAMIENTO, cronogramaServicio);
         museo = new ServicioIndividual(2, "Excursion Guiada Museo", "Visita guiada", "Operador B",
-                0f, 4000f, Categoria.EXCURSION, 0);
+                0f, 4000f, Categoria.EXCURSION, cronogramaServicio);
         vuelo = new ServicioIndividual(3, "Vuelo Buenos Aires - Roma", "Vuelo directo", "Operador C",
-                0f, 80000f, Categoria.VUELO, 10);
+                0f, 80000f, Categoria.VUELO, cronogramaServicio);
 
         Map<ServicioTuristico, Integer> itemsPack = new HashMap<>();
         itemsPack.put(hotel, 1);
         itemsPack.put(museo, 1);
-        pack = new PaqueteTuristico("Pack Escapada Urbana", "Hotel + museo", itemsPack, 0.1f);
+        pack = new PaqueteTuristico("Pack Escapada Urbana", "Hotel + museo", itemsPack, 0.1f, cronogramaServicio);
 
         servicios = new ArrayList<>();
         servicios.add(hotel);
@@ -59,6 +62,7 @@ public class BusquedaEnCatalogoTest {
         criterioNOT = new CriterioNOT(criterioPorCategoriaExcursion);
         criterioOR = new CriterioOR(criterioPorNombre, new CriterioCategoria(Categoria.VUELO));
         buscador = new BusquedaEnCatalogo(servicios);
+        cronogramaServicio = mock(CronogramaServicio.class);
     }
     // Criterios Simples
 
@@ -136,7 +140,7 @@ public class BusquedaEnCatalogoTest {
         Map<ServicioTuristico, Integer> itemsKit = new HashMap<>();
         itemsKit.put(pack, 1);
         itemsKit.put(vuelo, 1);
-        ServicioTuristico kit = new PaqueteTuristico("Kit Gran Tour", "Pack + vuelo", itemsKit, 0.05f);
+        ServicioTuristico kit = new PaqueteTuristico("Kit Gran Tour", "Pack + vuelo", itemsKit, 0.05f, cronogramaServicio);
         BusquedaEnCatalogo otroBuscador = new BusquedaEnCatalogo(List.of(kit));
 
         assertTrue(otroBuscador.buscar(criterioPorCategoria).contains(kit));

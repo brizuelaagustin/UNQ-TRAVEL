@@ -1,8 +1,5 @@
 import Atributos.*;
-import CatalogoTuristico.Catalogo;
-import CatalogoTuristico.PaqueteTuristico;
-import CatalogoTuristico.ServicioIndividual;
-import CatalogoTuristico.ServicioTuristico;
+import CatalogoTuristico.*;
 import Excepciones.ServicioInvalidoPorAtributoExtra;
 import Excepciones.ServicioInvalidoPorAtributoObligatorio;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +9,7 @@ import java.time.LocalDate;
 import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static CatalogoTuristico.Categoria.*;
+import static org.mockito.Mockito.mock;
 
 public class CatalogoTuristicoTest {
     ServicioIndividual servicio1; // 2000, desc 10% (final 1800)
@@ -25,27 +23,29 @@ public class CatalogoTuristicoTest {
     Atributo atributo2;
     Atributo atributo3;
     Atributo atributo4;
+    CronogramaServicio cronogramaServicio;
 
 
     @BeforeEach
     void setUp() {
         servicio1 = new ServicioIndividual(123, "Noche De Hotel Central", "habitacion para una persona",
-                "proveedor", 0.1f, 2000f, ALOJAMIENTO, 2);
+                "proveedor", 0.1f, 2000f, ALOJAMIENTO, cronogramaServicio);
         servicio2 = new ServicioIndividual(124, "Excursion museo", "excursion guiada",
-                "proveedor", 0.0f, 2200f, EXCURSION, 3);
+                "proveedor", 0.0f, 2200f, EXCURSION, cronogramaServicio);
         servicio3 = new ServicioIndividual(125, "alquiler de auto", "auto alta gama",
-                "proveedor", 0.2f, 2500f, EXCURSION, 4);
+                "proveedor", 0.2f, 2500f, EXCURSION, cronogramaServicio);
         servicio4 = new ServicioIndividual(126, "traslado aeropueRto", "traslado larga distancia",
-                "proveedor", 0.0f, 1000f, ALQUILERAUTO, 0);
+                "proveedor", 0.0f, 1000f, ALQUILERAUTO, cronogramaServicio);
         servicio5 = new ServicioIndividual(null,null,"suite para 2 personas","proveedor",
-                0.0f,1000f,ALOJAMIENTO, 8);
+                0.0f,1000f,ALOJAMIENTO, cronogramaServicio);
         servicio6 = new ServicioIndividual(null,"escapadaFinDeSemana","escapadaACordoba","cordobaviajes",
-                0.1f,500f,VUELO, 1);
+                0.1f,500f,VUELO, cronogramaServicio);
         catalogo = new Catalogo();
         atributo1 = new AtributoNumerico("capacidadMaxima",false,10);
         atributo2 = new AtributoDeTexto("PoliticaMascotas",false,"no se admiten");
         atributo3 = new AtributoDeTipoFecha("fechaSalida",false, LocalDate.of(2026,05,10));
         atributo4 = new AtributoTipoBooleano("cancelacion gratis",false,true);
+        cronogramaServicio = mock(CronogramaServicio.class);
 
 
     }
@@ -81,7 +81,7 @@ public class CatalogoTuristicoTest {
     @Test
     void test003_PaqueteConDescuentoConDosServiciosSinDescuento() {
         ServicioTuristico paquete1 = new PaqueteTuristico("Paquete Historia",
-                "Excursion museo y translado aeoropuerto", Map.of(servicio2, 1, servicio4, 1), 0.1f);
+                "Excursion museo y translado aeoropuerto", Map.of(servicio2, 1, servicio4, 1), 0.1f, cronogramaServicio);
         assertEquals(3200, paquete1.getPrecioBase());
         assertEquals(2880, paquete1.getPrecioFinal());
     }
@@ -89,7 +89,7 @@ public class CatalogoTuristicoTest {
     @Test
     void test004_PaqueteConDescuentoConDosServiciosConDescuento() {
         ServicioTuristico paquete2 = new PaqueteTuristico(
-                "Noche De Hotel Central", "habitacion para 2 personas", Map.of(servicio1, 2), 0.2f);
+                "Noche De Hotel Central", "habitacion para 2 personas", Map.of(servicio1, 2), 0.2f, cronogramaServicio);
         assertEquals(3600, paquete2.getPrecioBase());
         assertEquals(2880, paquete2.getPrecioFinal());
     }
@@ -97,7 +97,7 @@ public class CatalogoTuristicoTest {
     @Test
     void test005_paqueteConDescuentoConServicioSinDescuentoYServicioConDescuento() {
         ServicioTuristico paquete3 = new PaqueteTuristico("Hotel y museo",
-                "noche de hotel y excursion", Map.of(servicio2, 1, servicio1, 1), 0.1f);
+                "noche de hotel y excursion", Map.of(servicio2, 1, servicio1, 1), 0.1f, cronogramaServicio);
         assertEquals(4000f, paquete3.getPrecioBase());
         assertEquals(3600f, paquete3.getPrecioFinal());
     }
@@ -107,9 +107,9 @@ public class CatalogoTuristicoTest {
     @Test
     void test006_paqueteConDescuentoQueContieneOtroPaqueteConDescuento() {
         ServicioTuristico paquete4 = new PaqueteTuristico("Paquete Historia",
-                "museo y traslado", Map.of(servicio2, 1, servicio4, 1), 0.1f);
+                "museo y traslado", Map.of(servicio2, 1, servicio4, 1), 0.1f, cronogramaServicio);
         ServicioTuristico paquete5 = new PaqueteTuristico("Historia y hotel",
-                "paquete historia y noche de hotel", Map.of(paquete4, 1, servicio1, 1), 0.2f);
+                "paquete historia y noche de hotel", Map.of(paquete4, 1, servicio1, 1), 0.2f, cronogramaServicio);
         assertEquals(3744f, paquete5.getPrecioFinal());
         assertEquals(4680f, paquete5.getPrecioBase());
     }
@@ -117,9 +117,9 @@ public class CatalogoTuristicoTest {
     @Test
     void test007_paqueteConDescuentoQueContieneOtroPaqueteSinDescuento() {
         ServicioTuristico paquete6 = new PaqueteTuristico("Paquete Historia",
-                "museo y traslado", Map.of(servicio2, 1, servicio4, 1), 0.0f);   // 3200
+                "museo y traslado", Map.of(servicio2, 1, servicio4, 1), 0.0f, cronogramaServicio);   // 3200
         ServicioTuristico paquete7 = new PaqueteTuristico("Historia y hotel",
-                "paquete historia y noche de hotel", Map.of(paquete6, 1, servicio1, 1), 0.1f);
+                "paquete historia y noche de hotel", Map.of(paquete6, 1, servicio1, 1), 0.1f, cronogramaServicio);
         assertEquals(5000f, paquete7.getPrecioBase());
         assertEquals(4500f, paquete7.getPrecioFinal());
     }

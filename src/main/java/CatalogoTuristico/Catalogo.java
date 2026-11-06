@@ -19,29 +19,22 @@ public class Catalogo {
         }
     }
 
-    public void agregarServicioDisponible(ServicioTuristico servicio, Integer cantidadCupos, LocalDate fechaDeDisponibilidad){
-       if(!servicios.contains(servicio)){
-           throw new ServicioNoEncontradoException("El servicio no existe en el catalogo");
-       }else {
-           Integer cantAnterior = servicio.getCronogramaServicio().getCuposPorDia().get(fechaDeDisponibilidad);
-           servicio.getCronogramaServicio().getCuposPorDia().put(fechaDeDisponibilidad, cantAnterior  + cantidadCupos);
-       }
-    }
-    public void quitarServicioDisponible(ServicioTuristico servicio, Integer cantidadCupos,LocalDate fechaDeDisponibilidad){
+    public void quitarServicio(ServicioTuristico servicio){
         if(!servicios.contains(servicio)){
             throw new ServicioNoEncontradoException("El servicio no existe en el catalogo");
-        } else if (servicio.getCronogramaServicio().getCuposPorDia().get(fechaDeDisponibilidad) < cantidadCupos) {
-            throw new NoHayStockException("No hay suficiente cupo para quitar");
         } else {
-            Integer cantAnterior = servicio.getCronogramaServicio().getCuposPorDia().get(fechaDeDisponibilidad);
-            servicio.getCronogramaServicio().getCuposPorDia().put(fechaDeDisponibilidad, cantAnterior  - cantidadCupos);
+           servicios.remove(servicio);
         }
     }
-    public boolean tieneStockParaReserva(ServicioTuristico servicio,Integer cantidadCupos,LocalDate fechaReserva){
+    public boolean tieneStockParaReserva(ServicioTuristico servicio,Integer cantidadCupos,LocalDate fechaInicio, LocalDate fechaFin){
         if (!servicios.contains(servicio)){
             throw new ServicioNoEncontradoException("El servicio no existe en el catalogo");
         } else {
-            return servicio.getCronogramaServicio().getCuposPorDia().get(fechaReserva) >= cantidadCupos;
+            return servicio.hayCuposEn(fechaInicio, fechaFin, cantidadCupos);
         }
+    }
+
+    public boolean tieneServicio(ServicioTuristico servicio) {
+        return servicios.contains(servicio);
     }
 }
