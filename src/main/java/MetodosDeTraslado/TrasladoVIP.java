@@ -2,7 +2,7 @@ package MetodosDeTraslado;
 import Clases.Reserva;
 
 
-public class TrasladoVIP {
+public class TrasladoVIP implements MetodoDeTraslado{
     private float porcentajeFijo;
     private float cargoBase;
 
@@ -14,5 +14,10 @@ public class TrasladoVIP {
     public float calcularCosto(Reserva reserva){
         float precioDeLaReserva = reserva.getPrecio();
         return (precioDeLaReserva * porcentajeFijo) + cargoBase;
+    }
+
+    @Override
+    public Boolean estaDisponible(Reserva reserva) {
+        return true;
     }
 }

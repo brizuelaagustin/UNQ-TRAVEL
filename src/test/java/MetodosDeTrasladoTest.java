@@ -30,7 +30,7 @@ public class MetodosDeTrasladoTest {
 
         trasladoEstandar = new TrasladoEstandar(plataformaTransporte);
         trasladoVIP = new TrasladoVIP(0.15f, 1000f);
-        puntoDeEncuentro = new PuntoDeEncuentro(3);
+        puntoDeEncuentro = new PuntoDeEncuentro();
     }
 
     // TESTS DE TRASLADO ESTANDAR

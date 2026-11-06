@@ -2,13 +2,15 @@ package CatalogoTuristico;
 
 import Atributos.Atributo;
 import Excepciones.ServicioInvalidoPorAtributoExtra;
+import Reportes.Visitable;
+import Reportes.Visitor;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-public abstract class ServicioTuristico {
+public abstract class ServicioTuristico implements Visitable {
     public String nombre;
     public String descripcion;
     public CronogramaServicio cronogramaServicio;
@@ -38,5 +40,10 @@ public abstract class ServicioTuristico {
             atributosExtra.add(atributo);
         }
     }
+
+    public void aceptar(Visitor visitor){
+
+    }
 }
+
 

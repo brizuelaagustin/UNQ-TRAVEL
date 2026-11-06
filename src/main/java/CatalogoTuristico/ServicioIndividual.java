@@ -3,6 +3,7 @@ package CatalogoTuristico;
 import Atributos.Atributo;
 import Excepciones.ServicioInvalidoPorAtributoObligatorio;
 import Excepciones.ServicioInvalidoPorAtributoExtra;
+import Reportes.Visitor;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -44,5 +45,9 @@ public class ServicioIndividual extends ServicioTuristico{
     @Override
     public boolean tieneDisponibilidad() {
         return false;
+    }
+
+    public void aceptar(Visitor visitor){
+        visitor.visitarServicioIndividual(this);
     }
 }

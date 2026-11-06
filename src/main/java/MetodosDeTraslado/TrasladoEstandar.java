@@ -13,4 +13,9 @@ public class TrasladoEstandar implements MetodoDeTraslado {
     return plataformaDeTransporte.estimarTraslado(reserva.getCantidadPasajeros(), reserva.getDireccionDestino());
     }
 
+    @Override
+    public Boolean estaDisponible(Reserva reserva) {
+        return true;
+    }
+
 }

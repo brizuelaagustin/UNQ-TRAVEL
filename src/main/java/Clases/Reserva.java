@@ -1,10 +1,12 @@
 package Clases;
 
 import CatalogoTuristico.ServicioTuristico;
+import Excepciones.reservas.MetodoDeTrasladoNoDisponibleException;
 import Excepciones.reservas.NoHayStockException;
 import Excepciones.reservas.ServicioNoEncontradoException;
 import MetodoDePago.MetodoDePago;
 import EstadosDeReserva.EstadoDeReserva;
+import MetodosDeTraslado.PuntoDeEncuentro;
 import NotificacionesDeReserva.NotificadorDeEmail;
 import NotificacionesDeReserva.NotificadorDeReserva;
 import lombok.Getter;
@@ -30,10 +32,12 @@ public class Reserva {
     private NotificadorDeReserva notificadorDeReserva;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
+    private Boolean tieneCupoDeGuias;
 
     public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cantPasajeros,
                    Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente,
-                   NotificadorDeReserva notificadorDeReserva, LocalDate fechaInicio, LocalDate fechaFin){
+                   NotificadorDeReserva notificadorDeReserva, LocalDate fechaInicio, LocalDate fechaFin,
+                   Boolean tieneCupoDeGuias){
         this.estadoDeReserva=reserva;
         this.estrategiaTraslado=traslado;
         this.servicios=new HashMap<>();
@@ -45,6 +49,7 @@ public class Reserva {
         this.notificadorDeReserva = notificadorDeReserva;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.tieneCupoDeGuias = tieneCupoDeGuias;
     }
 
     public void confirmarReserva(){
@@ -68,6 +73,10 @@ public class Reserva {
     }
 
     public void setEstrategia(MetodoDeTraslado metodoT){
+        if (!metodoT.estaDisponible(this)) {
+            throw new MetodoDeTrasladoNoDisponibleException(
+                    "El método de traslado elegido no tiene disponibilidad");
+        }
         this.estrategiaTraslado = metodoT;
     }
 
@@ -98,6 +107,7 @@ public class Reserva {
         int cantidadAnterior = servicios.getOrDefault(servicio, 0);
         servicios.put(servicio,cantidadAnterior + cantidadDeCupos);
     }
+
     public void quitarServicio(ServicioTuristico servicio , Integer cantidad){
         estadoDeReserva.quitarServicio(this, servicio, cantidad);
     }

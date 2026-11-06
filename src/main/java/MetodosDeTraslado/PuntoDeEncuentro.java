@@ -1,16 +1,16 @@
 package MetodosDeTraslado;
 import Clases.Reserva;
-public class PuntoDeEncuentro {
-    private int cupoDeGuias;
-
-    public PuntoDeEncuentro(int cupoDeGuias){
-
-        this.cupoDeGuias = cupoDeGuias;
-    }
+public class PuntoDeEncuentro implements MetodoDeTraslado{
 
     public float calcularCosto(Reserva reserva){
 
         return 0;
     }
+
+    @Override
+    public Boolean estaDisponible(Reserva reserva){
+        return  reserva.getTieneCupoDeGuias();
+    }
+
 
 }

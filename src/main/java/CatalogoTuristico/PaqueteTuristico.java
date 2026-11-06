@@ -1,5 +1,6 @@
 package CatalogoTuristico;
 
+import Reportes.Visitor;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -55,5 +56,9 @@ public class PaqueteTuristico extends  ServicioTuristico {
             }
         }
         return true;
+    }
+
+    public void aceptar(Visitor visitor){
+        visitor.visitarPaqueteTuristico(this);
     }
 }
