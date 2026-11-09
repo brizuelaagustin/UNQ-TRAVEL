@@ -39,7 +39,7 @@ public class Reserva {
                    NotificadorDeReserva notificadorDeReserva, LocalDate fechaInicio, LocalDate fechaFin,
                    Boolean tieneCupoDeGuias){
         this.estadoDeReserva=reserva;
-        this.estrategiaTraslado=traslado;
+        this.setEstrategia(traslado);
         this.servicios=new HashMap<>();
         this.cantidadPasajeros=cantPasajeros;
         this.direccionDestino=direccion;
