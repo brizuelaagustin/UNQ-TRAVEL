@@ -11,6 +11,7 @@ import NotificacionesDeReserva.NotificadorDeReserva;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,8 @@ public class EstadosDeReservaTest {
     Cliente cliente;
     NotificadorDeReserva notificador;
     ServicioTuristico servicio;
+    LocalDate fechaInicio;
+    LocalDate fechaFin;
 
     EstadoDeReserva estadoPendiente;
     EstadoDeReserva estadoConfirmado;
@@ -53,7 +56,9 @@ public class EstadosDeReservaTest {
         cliente = mock(Cliente.class);
         notificador = mock(NotificadorDeReserva.class);
         servicio = mock(ServicioTuristico.class);
-        reserva = new Reserva(estado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
+        reserva = new Reserva(estado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        fechaInicio = mock(LocalDate.class);
+        fechaFin = mock(LocalDate.class);
 
         estadoPendiente = new Pendiente();
         estadoConfirmado = new Confirmada();
@@ -62,12 +67,12 @@ public class EstadosDeReservaTest {
         estadoFinalizado = new Finalizada();
         estadoCancelado = new Cancelada();
 
-        reservaPendiente = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
-        reservaConfirmada = new Reserva(estadoConfirmado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
-        reservaCheckIn = new Reserva(estadoCheckIn, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
-        reservaEnCurso = new Reserva(estadoEnCurso, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
-        reservaFinalizada = new Reserva(estadoFinalizado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
-        reservaCancelada = new Reserva(estadoCancelado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador);
+        reservaPendiente = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reservaConfirmada = new Reserva(estadoConfirmado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reservaCheckIn = new Reserva(estadoCheckIn, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reservaEnCurso = new Reserva(estadoEnCurso, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reservaFinalizada = new Reserva(estadoFinalizado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reservaCancelada = new Reserva(estadoCancelado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
     }
 
 
@@ -397,9 +402,9 @@ public class EstadosDeReservaTest {
     @Test
     void test042_UnaReservaPendienteNoPuedeAgregarUnServicioSiNoHayStockEnElCatalogo(){
         Catalogo nuevoCatalogo = new Catalogo();
-        Reserva reservaPendiente2 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo, cliente, notificador);
+        Reserva reservaPendiente2 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo, cliente, notificador, fechaInicio, fechaFin, false);
         nuevoCatalogo.registrarNuevoServicio(servicio);
-        nuevoCatalogo.agregarServicioDisponible(servicio,0);
+        nuevoCatalogo.registrarNuevoServicio(servicio);
         try {
             reservaPendiente2.agregarServicio(servicio,1);
         } catch (NoHayStockException e) {

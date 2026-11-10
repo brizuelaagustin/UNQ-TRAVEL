@@ -11,6 +11,8 @@ import NotificacionesDeReserva.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,8 +28,10 @@ public class NotificacionesDeReservaTest {
     private Reserva reserva;
     private MetodoDeTraslado trasladoEstandar;
     private Direccion direccion;
-    private  MetodoDePago transferenciaBancaria;
-    private  Catalogo mockCatalogo;
+    private MetodoDePago transferenciaBancaria;
+    private Catalogo mockCatalogo;
+    private LocalDate mockFechaInicio;
+    private LocalDate mockFechaFin;
 
     @BeforeEach
     void setUo(){
@@ -45,9 +49,11 @@ public class NotificacionesDeReservaTest {
         direccion = mock(Direccion.class);
         transferenciaBancaria = mock(MetodoDePago.class);
         mockCatalogo = mock(Catalogo.class);
+        mockFechaInicio = mock(LocalDate.class);
+        mockFechaFin = mock(LocalDate.class);
 
         reserva = new Reserva(estadoDeReserva,trasladoEstandar,1, direccion,transferenciaBancaria,mockCatalogo,cliente1
-                                ,notificadorDeReserva);
+                                ,notificadorDeReserva, mockFechaInicio, mockFechaFin, false);
 
         reserva.getNotificadorDeReserva().registrarObservador(notificadorDeEmail);
         reserva.getNotificadorDeReserva().registrarObservador(generadorDeFactura);
