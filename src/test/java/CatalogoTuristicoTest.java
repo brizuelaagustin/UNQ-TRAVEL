@@ -193,11 +193,29 @@ public class CatalogoTuristicoTest {
         assertDoesNotThrow( () -> servicio5.agregarAtributoExtra(atributo4));
     }
 
-//    @Test
-//    void test016_seIntentaValidarUnServicioQueTieneAtributoExtra(){
-//        Atributo atributo6 = new AtributoNumerico("capacidad",false,"dos");
-//        servicio1.agregarAtributoExtra(atributo6);
-//        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.validarAtributos());
-//    }
+   @Test
+    void test019_seIntentaAgregarUnAtributoNumericoInvalido(){
+        Atributo atributo6 = new AtributoNumerico("capacidad",false,"dos");
+        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.agregarAtributoExtra(atributo6));
+    }
+
+    @Test
+    void test020_seIntentaAgregarUnAtributoDeFechaInvalido(){
+        Atributo atributo6 = new AtributoDeTipoFecha("fechaSalida",false, "s");
+        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.agregarAtributoExtra(atributo6));
+    }
+
+    @Test
+    void test021_seIntentaAgregarUnAtributoDeTextoInvalido(){
+        Atributo atributo6 = new AtributoDeTexto("PoliticaMascotas",false,4);
+        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.agregarAtributoExtra(atributo6));
+    }
+
+
+    @Test
+    void test022_seIntentaAgregarUnAtributoBooleanoInvalido(){
+        Atributo atributo6 = new AtributoTipoBooleano("capacidad",false,"dos");
+        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.agregarAtributoExtra(atributo6));
+    }
 
 }

@@ -1,4 +1,6 @@
 import CatalogoTuristico.Catalogo;
+import CatalogoTuristico.CronogramaServicio;
+import CatalogoTuristico.ServicioIndividual;
 import CatalogoTuristico.ServicioTuristico;
 import Clases.Cliente;
 import Clases.Reserva;
@@ -7,6 +9,7 @@ import Excepciones.reservas.*;
 import MetodoDePago.MetodoDePago;
 import MetodosDeTraslado.Direccion;
 import MetodosDeTraslado.MetodoDeTraslado;
+import MetodosDeTraslado.PuntoDeEncuentro;
 import NotificacionesDeReserva.NotificadorDeReserva;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,8 +18,10 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static CatalogoTuristico.Categoria.ALOJAMIENTO;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class EstadosDeReservaTest {
 
@@ -31,6 +36,8 @@ public class EstadosDeReservaTest {
     ServicioTuristico servicio;
     LocalDate fechaInicio;
     LocalDate fechaFin;
+    LocalDate fechaInicio1 =  LocalDate.of(2020,10,1 );
+    LocalDate fechaFin1 =  LocalDate.of(2020, 10, 11);
 
     EstadoDeReserva estadoPendiente;
     EstadoDeReserva estadoConfirmado;
@@ -49,16 +56,19 @@ public class EstadosDeReservaTest {
     @BeforeEach
     void setup() {
         estado = mock(EstadoDeReserva.class);
-        metodoTraslado = mock(MetodoDeTraslado.class);
+        metodoTraslado = new PuntoDeEncuentro();
         direccion = mock(Direccion.class);
         metodoPago = mock(MetodoDePago.class);
         catalogo = mock(Catalogo.class);
         cliente = mock(Cliente.class);
         notificador = mock(NotificadorDeReserva.class);
         servicio = mock(ServicioTuristico.class);
-        reserva = new Reserva(estado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reserva = new Reserva(estado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
         fechaInicio = mock(LocalDate.class);
         fechaFin = mock(LocalDate.class);
+        CronogramaServicio cronogramaServicio = new CronogramaServicio();
+        ServicioTuristico servicio1 = new ServicioIndividual(123, "Noche De Hotel Central", "habitacion para una persona",
+                "proveedor", 0.1f, 2000f, ALOJAMIENTO, cronogramaServicio);
 
         estadoPendiente = new Pendiente();
         estadoConfirmado = new Confirmada();
@@ -67,12 +77,12 @@ public class EstadosDeReservaTest {
         estadoFinalizado = new Finalizada();
         estadoCancelado = new Cancelada();
 
-        reservaPendiente = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
-        reservaConfirmada = new Reserva(estadoConfirmado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
-        reservaCheckIn = new Reserva(estadoCheckIn, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
-        reservaEnCurso = new Reserva(estadoEnCurso, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
-        reservaFinalizada = new Reserva(estadoFinalizado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
-        reservaCancelada = new Reserva(estadoCancelado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
+        reservaPendiente = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
+        reservaConfirmada = new Reserva(estadoConfirmado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
+        reservaCheckIn = new Reserva(estadoCheckIn, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
+        reservaEnCurso = new Reserva(estadoEnCurso, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
+        reservaFinalizada = new Reserva(estadoFinalizado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
+        reservaCancelada = new Reserva(estadoCancelado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, true);
     }
 
 
@@ -402,8 +412,7 @@ public class EstadosDeReservaTest {
     @Test
     void test042_UnaReservaPendienteNoPuedeAgregarUnServicioSiNoHayStockEnElCatalogo(){
         Catalogo nuevoCatalogo = new Catalogo();
-        Reserva reservaPendiente2 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo, cliente, notificador, fechaInicio, fechaFin, false);
-        nuevoCatalogo.registrarNuevoServicio(servicio);
+        Reserva reservaPendiente2 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo, cliente, notificador, fechaInicio, fechaFin, true);
         nuevoCatalogo.registrarNuevoServicio(servicio);
         try {
             reservaPendiente2.agregarServicio(servicio,1);
@@ -411,13 +420,12 @@ public class EstadosDeReservaTest {
             assertEquals(e.getMessage(),"No se pueden agregar, no hay stock suficiente");
         }
     }
-//    @Test
-//    void test043_UnaReservaPuedeAgregarUnServicio(){
-//        Catalogo nuevoCatalogo2 = new Catalogo();
-//        Reserva reservaPendiente3 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo2, cliente, notificador);
-//        nuevoCatalogo2.registrarNuevoServicio(servicio);
-//        nuevoCatalogo2.agregarServicioDisponible(servicio,3);
-//        reservaPendiente3.agregarServicio(servicio,2);
-//
-//    }
+    @Test
+    void test043_UnaReservaPuedeAgregarUnServicio(){
+        Catalogo nuevoCatalogo2 = new Catalogo();
+        Reserva reservaPendiente3 = new Reserva(estadoPendiente, metodoTraslado, 10, direccion, metodoPago, nuevoCatalogo2, cliente, notificador, fechaInicio1, fechaFin1, true);
+        nuevoCatalogo2.registrarNuevoServicio(servicio);
+        assertTrue(nuevoCatalogo2.tieneStockParaReserva(servicio, 10, fechaInicio1, fechaFin1 ));
+
+    }
 }

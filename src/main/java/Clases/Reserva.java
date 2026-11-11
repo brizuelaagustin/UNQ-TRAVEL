@@ -22,7 +22,6 @@ import java.util.Map;
 @Getter
 public class Reserva {
     private EstadoDeReserva estadoDeReserva;
-    private MetodoDeTraslado estrategiaTraslado;
     private Map<ServicioTuristico,Integer> servicios;
     private Integer cantidadPasajeros;
     private Direccion direccionDestino;
@@ -33,12 +32,14 @@ public class Reserva {
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Boolean tieneCupoDeGuias;
+    private MetodoDeTraslado estrategiaTraslado;
 
     public Reserva(EstadoDeReserva reserva, MetodoDeTraslado traslado, Integer cantPasajeros,
                    Direccion direccion, MetodoDePago metodoPago, Catalogo catalogo, Cliente cliente,
                    NotificadorDeReserva notificadorDeReserva, LocalDate fechaInicio, LocalDate fechaFin,
                    Boolean tieneCupoDeGuias){
         this.estadoDeReserva=reserva;
+        this.tieneCupoDeGuias = tieneCupoDeGuias;
         this.setEstrategia(traslado);
         this.servicios=new HashMap<>();
         this.cantidadPasajeros=cantPasajeros;
@@ -49,7 +50,6 @@ public class Reserva {
         this.notificadorDeReserva = notificadorDeReserva;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.tieneCupoDeGuias = tieneCupoDeGuias;
     }
 
     public void confirmarReserva(){
