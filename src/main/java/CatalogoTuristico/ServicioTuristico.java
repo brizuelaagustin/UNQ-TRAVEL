@@ -59,6 +59,9 @@ public abstract class ServicioTuristico {
     }
 
 
+    public void agregarCupos(int cantCupos, LocalDate fechaInicio, LocalDate fechaFin) {
+        cronogramaServicio.agregarCupo(cantCupos, fechaInicio, fechaFin);
+    }
 }
 
 

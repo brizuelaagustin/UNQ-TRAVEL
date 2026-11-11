@@ -12,6 +12,6 @@ public class AtributoNumerico extends Atributo{
             return true;
         } catch (NumberFormatException e) {
             return false;
-        }//algo que dijo el profe
+        }
     }
 }

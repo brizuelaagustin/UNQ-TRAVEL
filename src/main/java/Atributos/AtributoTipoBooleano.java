@@ -7,6 +7,6 @@ public class AtributoTipoBooleano extends Atributo {
 
     @Override
     protected boolean tipoCorrecto(Object valor) {
-        return valor instanceof  Boolean;
+        return Boolean.class.isInstance(valor);
     }
 }

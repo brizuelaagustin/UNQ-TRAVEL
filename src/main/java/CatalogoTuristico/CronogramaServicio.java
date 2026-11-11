@@ -32,7 +32,7 @@ public class CronogramaServicio {
 
     public void agregarCupo(Integer cantidadDeCupos, LocalDate fechaInicio, LocalDate fechaFin) {
         for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
-            int cuposAnteriores = cuposPorDia.get(fecha);
+            int cuposAnteriores = cuposPorDia.getOrDefault(fecha, 0);
             cuposPorDia.put(fecha, cuposAnteriores + cantidadDeCupos);
         }
     }

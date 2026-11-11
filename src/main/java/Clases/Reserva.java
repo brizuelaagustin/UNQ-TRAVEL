@@ -103,7 +103,6 @@ public class Reserva {
         if(!catalogo.tieneStockParaReserva(servicio,cantidadDeCupos,fechaInicio,fechaFin)) {
             throw new NoHayStockException("No se pueden agregar, no hay stock suficiente");
         }
-        servicio.quitarCupos(cantidadDeCupos, fechaInicio, fechaFin);
         int cantidadAnterior = servicios.getOrDefault(servicio, 0);
         servicios.put(servicio,cantidadAnterior + cantidadDeCupos);
     }
@@ -113,15 +112,30 @@ public class Reserva {
     }
 
     public void removerServicio(ServicioTuristico servicio, Integer cantidad){
-        if(! servicios.containsKey(servicio)){
+        if(! this.tieneServicio(servicio)){
             throw  new ServicioNoEncontradoException("No se puede remover un servicio que no esta en la reserva");
         }
         int cantidadActual = servicios.getOrDefault(servicio,0);
         if(cantidadActual > cantidad){
             servicios.put(servicio, cantidadActual - cantidad);
-            servicio.devolverCupos(cantidad, fechaInicio, fechaFin);
-        }else{
-            throw new NoHayStockException("No hay esa cantidad de servicios suficientes para remover");
+            // servicio.devolverCupos(cantidad, fechaInicio, fechaFin); devolver cupos deberia depender de un estado de reserva
+        }else { if (cantidadActual == cantidad) {
+                servicios.remove(servicio);
+                } else {
+                    throw new NoHayStockException("No hay esa cantidad de servicios suficientes para remover");
         }
+        }
+    }
+
+    public boolean tieneServicio(ServicioTuristico servicio) {
+        return servicios.containsKey(servicio);
+    }
+
+    public void removerCupos() {
+        servicios.keySet().stream().forEach(servicioTuristico -> servicioTuristico.quitarCupos((servicios.get(servicioTuristico)),fechaInicio,fechaFin));
+    }
+
+    public int cantidadDeServicio(ServicioTuristico servicio) {
+       return servicios.getOrDefault(servicio,0);
     }
 }
