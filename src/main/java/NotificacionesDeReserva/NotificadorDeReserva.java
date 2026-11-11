@@ -8,8 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class NotificadorDeReserva {
-    private final Set<Subsistema> observadores = new LinkedHashSet<>(); // no se si seria un mejor nombre cliente
-    // porque en realidad son fidelizacion, etc
+    private final Set<Subsistema> observadores = new LinkedHashSet<>();
 
     public void registrarObservador(Subsistema observer){
         observadores.add(observer);

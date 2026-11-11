@@ -7,6 +7,6 @@ public class AtributoDeTexto extends Atributo {
 
     @Override
     protected boolean tipoCorrecto(Object valor) {
-        return valor instanceof String;
+            return valor instanceof String;
     }
 }

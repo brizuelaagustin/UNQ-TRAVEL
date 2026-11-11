@@ -1,6 +1,7 @@
 package Atributos;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 public class AtributoDeTipoFecha extends Atributo{
     public AtributoDeTipoFecha(String nombre, boolean obligatrio, Object valor) {
@@ -9,6 +10,11 @@ public class AtributoDeTipoFecha extends Atributo{
 
     @Override
     protected boolean tipoCorrecto(Object valor) {
-        return valor instanceof LocalDate;
+        try {
+            LocalDate.parse(String.valueOf(valor));
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 }

@@ -7,6 +7,11 @@ public class AtributoNumerico extends Atributo{
 
     @Override
     protected boolean tipoCorrecto(Object valor) {
-        return valor Integer.valueOf(valor) Number; //algo que dijo el profe
+        try {
+            Integer.valueOf(String.valueOf(valor));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }//algo que dijo el profe
     }
 }

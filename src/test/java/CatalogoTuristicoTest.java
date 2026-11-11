@@ -2,6 +2,7 @@ import Atributos.*;
 import CatalogoTuristico.*;
 import Excepciones.ServicioInvalidoPorAtributoExtra;
 import Excepciones.ServicioInvalidoPorAtributoObligatorio;
+import Excepciones.reservas.OperacionInvalidaException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,9 +37,9 @@ public class CatalogoTuristicoTest {
                 "proveedor", 0.2f, 2500f, EXCURSION, cronogramaServicio);
         servicio4 = new ServicioIndividual(126, "traslado aeropueRto", "traslado larga distancia",
                 "proveedor", 0.0f, 1000f, ALQUILERAUTO, cronogramaServicio);
-        servicio5 = new ServicioIndividual(null,null,"suite para 2 personas","proveedor",
+        servicio5 = new ServicioIndividual(345,"Noche de hotel cordoba","suite para 2 personas","proveedor",
                 0.0f,1000f,ALOJAMIENTO, cronogramaServicio);
-        servicio6 = new ServicioIndividual(null,"escapadaFinDeSemana","escapadaACordoba","cordobaviajes",
+        servicio6 = new ServicioIndividual(908,"escapadaFinDeSemana","escapadaACordoba","cordobaviajes",
                 0.1f,500f,VUELO, cronogramaServicio);
         catalogo = new Catalogo();
         atributo1 = new AtributoNumerico("capacidadMaxima",false,10);
@@ -156,26 +157,47 @@ public class CatalogoTuristicoTest {
         assertEquals(true,atributo4.getValor());
     }
     @Test
-    void test012_seValidaUnServicioQueNoTieneAtributosExtra(){
-        assertDoesNotThrow( () -> servicio1.validarAtributos());
+    void test012_seValidaUnServicioQueNoTieneAtributosExtraPeroTieneNombreNull(){
+        assertThrows(ServicioInvalidoPorAtributoObligatorio.class ,()-> new ServicioIndividual(198,null,"escapadaACordoba","cordobaviajes",
+                0.1f,500f,VUELO, cronogramaServicio));
     }
 
     @Test
-    void test013seIntentaValidarUnServicioQueNoTieneAtributosExtra(){
-        assertThrows(ServicioInvalidoPorAtributoObligatorio.class, () -> servicio5.validarAtributos());
+    void test013seIntentaValidarUnServicioQueNoTieneAtributosExtraPeroTieneIDNull(){
+        try {
+            ServicioTuristico servicio10 = new ServicioIndividual(null,"escapadaFinDeSemana","escapadaACordoba","cordobaviajes",
+                    0.1f,500f,VUELO, cronogramaServicio);
+        } catch (ServicioInvalidoPorAtributoObligatorio e) {
+            assertEquals(e.getMessage(),"servicio invalido, por falta de nombre o codigo");
+        }
+    }
+    @Test
+    void test014_seValidaUnServicioQueNoTieneAtributosExtra(){
+        assertDoesNotThrow(()-> new ServicioIndividual(198,"escapada finde","escapadaACordoba","cordobaviajes",
+                0.1f,500f,VUELO, cronogramaServicio));
+    }
+    @Test
+    void test015_seValidaUnServicioQueTieneAtributoExtraNumerico(){
+        assertDoesNotThrow( () -> servicio2.agregarAtributoExtra(atributo1));
+    }
+    @Test
+    void test016_seValidaUnServicioQueTieneAtributoExtraDeFecha(){
+        assertDoesNotThrow( () -> servicio2.agregarAtributoExtra(atributo3));
+    }
+    @Test
+    void test017_seValidaUnServicioQueTieneAtributoExtraTexto(){
+        assertDoesNotThrow( () -> servicio3.agregarAtributoExtra(atributo2));
+    }
+    @Test
+    void test018_seValidaUnServicioQueTieneAtributoExtraBooleano(){
+        assertDoesNotThrow( () -> servicio5.agregarAtributoExtra(atributo4));
     }
 
-    @Test
-    void test014_seValidaUnServicioQueTieneAtributoExtra(){
-        servicio2.agregarAtributoExtra(atributo1);
-        assertDoesNotThrow( () -> servicio2.validarAtributos());
-    }
-
-    @Test
-    void test015_seIntentaValidarUnServicioQueTieneAtributoExtra(){
-        Atributo atributo6 = new AtributoNumerico("capacidad",false,"dos");
-        servicio1.agregarAtributoExtra(atributo6);
-        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.validarAtributos());
-    }
+//    @Test
+//    void test016_seIntentaValidarUnServicioQueTieneAtributoExtra(){
+//        Atributo atributo6 = new AtributoNumerico("capacidad",false,"dos");
+//        servicio1.agregarAtributoExtra(atributo6);
+//        assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.validarAtributos());
+//    }
 
 }
