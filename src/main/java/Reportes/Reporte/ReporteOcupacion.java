@@ -9,7 +9,7 @@ import Reportes.Visitor;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ReporteOcupacion implements Visitor {
+public class ReporteOcupacion extends Reporte {
     private Map<Categoria, Integer> totalPorCategoria = new HashMap<>();
     private Map<Categoria, Integer> reservadosPorCategoria = new HashMap<>();
 
@@ -33,12 +33,12 @@ public class ReporteOcupacion implements Visitor {
         }
     }
 
-    protected void reiniciar() {
+    public void reiniciar() {
         totalPorCategoria.clear();
         reservadosPorCategoria.clear();
     }
 
-    protected Map<String, String> resultado() {
+    public Map<String, String> resultado() {
         Map<String, String> datos = new HashMap<>();
         for (Categoria categoria : totalPorCategoria.keySet()) {
             int total = totalPorCategoria.get(categoria);

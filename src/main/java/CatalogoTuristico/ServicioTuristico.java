@@ -15,11 +15,14 @@ public abstract class ServicioTuristico implements Visitable {
     public String descripcion;
     public CronogramaServicio cronogramaServicio;
     public List<Atributo> atributosExtra;
+    private int cantidadVendida;
+
 
     public abstract float getPrecioBase();
     public abstract float getPrecioFinal();
     public abstract Boolean perteneceACategoria(Categoria categoria);
     public abstract boolean tieneDisponibilidad();
+    public abstract void aceptar(Visitor visitor);
 
     public void quitarCupos(Integer cantidadDeCupos, LocalDate fechaInicio, LocalDate fechaFin) {
         cronogramaServicio.quitarCupos(cantidadDeCupos, fechaInicio, fechaFin);
@@ -41,9 +44,21 @@ public abstract class ServicioTuristico implements Visitable {
         }
     }
 
-    public void aceptar(Visitor visitor){
 
+    public int cantidadVendidaEnPeriodo(LocalDate desde, LocalDate hasta) {
+        int total = 0;
+        return total;
     }
+
+    public void incrementarCantidadVendida(){
+        this.cantidadVendida ++;
+    }
+
+    public void decrementarCantidadVendida(){
+        this.cantidadVendida --;
+    }
+
+
 }
 
 
