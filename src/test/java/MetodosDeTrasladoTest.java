@@ -69,27 +69,47 @@ public class MetodosDeTrasladoTest {
         assertEquals(2500f, costoCalculado);
     }
 
+    @Test
+    void test002_trasladoEstandarSiempreEstaDisponible() {
+        assertTrue(trasladoEstandar.estaDisponible(reserva1));
+    }
+
     // TESTS DE TRASLADO VIP
     @Test
-    void test002_trasladoVipCalculaCostoEnBaseAlPrecioTotalDeLaReserva() {
+    void test003_trasladoVipCalculaCostoEnBaseAlPrecioTotalDeLaReserva() {
 
         float costoCalculado = trasladoVIP.calcularCosto(reserva1);
         assertEquals(2500f, costoCalculado);
     }
 
+    @Test
+    void test004_trasladoVipSiempreEstaDisponible() {
+        assertTrue(trasladoVIP.estaDisponible(reserva1));
+    }
+
 
     // TESTS DE PUNTO DE ENCUENTRO
     @Test
-    void test003_trasladoPuntoDeEncuentroSiempreRetornaCostoCero() {
+    void test005_trasladoPuntoDeEncuentroSiempreRetornaCostoCero() {
         assertEquals(0.0f, puntoDeEncuentro.calcularCosto(reserva1));
     }
 
     @Test
-    void test004_UnaReservaSinCuposDeGuiaNoPuedeAgregarUnPuntoDeEncuentro(){
+    void test006_UnaReservaSinCuposDeGuiaNoPuedeAgregarUnPuntoDeEncuentro(){
         try {
             new Reserva(estado, metodoTraslado, 10, direccion, metodoPago, catalogo, cliente, notificador, fechaInicio, fechaFin, false);
         } catch (MetodoDeTrasladoNoDisponibleException e) {
             assertEquals(e.getMessage(), "El método de traslado elegido no tiene disponibilidad");
         }
+    }
+
+    @Test
+    void test007_laDireccionGuardaTodosSusDatos() {
+        Direccion direccion = new Direccion("Av. Mitre 500", "Quilmes", "Buenos Aires", "1878");
+
+        assertEquals("Av. Mitre 500", direccion.getCalle());
+        assertEquals("Quilmes", direccion.getCiudad());
+        assertEquals("Buenos Aires", direccion.getProvincia());
+        assertEquals("1878", direccion.getCodigoPostal());
     }
 }

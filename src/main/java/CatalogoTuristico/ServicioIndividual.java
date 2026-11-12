@@ -39,7 +39,7 @@ public class ServicioIndividual extends ServicioTuristico{
 
     @Override
     public boolean tieneDisponibilidad() {
-        return false;
+        return (this.cronogramaServicio.getCuposPorDia().size() > 0);
     }
 
 //    public void aceptar(Visitor visitor){
