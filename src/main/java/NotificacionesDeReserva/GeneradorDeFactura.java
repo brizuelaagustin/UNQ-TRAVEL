@@ -7,11 +7,6 @@ public class GeneradorDeFactura implements  Subsistema{
 
     @Override
     public void actualizarEstado(Reserva reserva, EstadoDeReserva estadoNuevo, EstadoDeReserva estadoAnterior) {
-        String nombreDelEstado = estadoNuevo.getClass().getSimpleName();
-
-        if(nombreDelEstado.contains("Finalizada")){
-            System.out.println("Generando comprobante fiscal y voucher para la reserva por un total de" + reserva.getPrecio());
-        }
-
+        estadoNuevo.generarFactura(reserva);
     }
 }

@@ -4,6 +4,8 @@ import CatalogoTuristico.ServicioTuristico;
 import Clases.Reserva;
 import Excepciones.reservas.OperacionInvalidaException;
 import Excepciones.reservas.reservaFinalizada;
+import NotificacionesDeReserva.Fidelizacion;
+import NotificacionesDeReserva.GeneradorDeFactura;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Finalizada implements EstadoDeReserva {
@@ -35,7 +37,16 @@ public class Finalizada implements EstadoDeReserva {
 
     @Override
     public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
-        notificadorDeEmail.getMailSender().enviarMail(reserva.getCliente().getEmail(),"Actualizacion de reserva",
-                                                        "reserva pasa a " + this, null);
+        notificadorDeEmail.getMailSender().enviarMail(reserva.obtenerMailCliente(),"Actualización de tu reserva",
+                "Tu reserva pasó a estado Finalizada", null);
+    }
+
+    @Override
+    public void notificarFidelizacion(Reserva reserva, Fidelizacion fidelizacion) {
+    }
+
+    @Override
+    public void generarFactura(Reserva reserva) {
+        System.out.println("Generando comprobante fiscal y voucher para la reserva por un total de" + reserva.getPrecio());
     }
 }

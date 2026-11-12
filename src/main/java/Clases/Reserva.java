@@ -89,7 +89,9 @@ public class Reserva {
     }
 
     public void actualizarReserva(EstadoDeReserva nuevoEstado){
+        EstadoDeReserva estadoAnterior = estadoDeReserva;
         estadoDeReserva = nuevoEstado;
+        notificadorDeReserva.notificarCambio(this, nuevoEstado, estadoAnterior);
     }
 
     public void agregarServicio(ServicioTuristico servicio,Integer cantidad){
@@ -137,5 +139,9 @@ public class Reserva {
 
     public int cantidadDeServicio(ServicioTuristico servicio) {
        return servicios.getOrDefault(servicio,0);
+    }
+
+    public String obtenerMailCliente() {
+        return cliente.getEmail();
     }
 }

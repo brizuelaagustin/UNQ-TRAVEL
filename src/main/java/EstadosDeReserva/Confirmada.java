@@ -3,6 +3,7 @@ package EstadosDeReserva;
 import CatalogoTuristico.ServicioTuristico;
 import Excepciones.reservas.OperacionInvalidaException;
 import Clases.Reserva;
+import NotificacionesDeReserva.Fidelizacion;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Confirmada implements EstadoDeReserva {
@@ -34,7 +35,15 @@ public class Confirmada implements EstadoDeReserva {
 
     @Override
     public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
-        notificadorDeEmail.getMailSender().enviarMail(reserva.getCliente().getEmail(),"Actualizacion de reserva",
-                "reserva pasa a " + this, null);
+        notificadorDeEmail.getMailSender().enviarMail(reserva.obtenerMailCliente(),"Actualización de tu reserva",
+                "Tu reserva pasó a estado Confirmada", null);
+    }
+
+    @Override
+    public void notificarFidelizacion(Reserva reserva, Fidelizacion fidelizacion) {
+    }
+
+    @Override
+    public void generarFactura(Reserva reserva) {
     }
 }

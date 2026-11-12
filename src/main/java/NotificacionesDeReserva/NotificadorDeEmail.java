@@ -14,6 +14,6 @@ public class NotificadorDeEmail implements  Subsistema{
 
     @Override
     public void actualizarEstado(Reserva reserva, EstadoDeReserva estadoNuevo, EstadoDeReserva estadoAnterior) {
-        estadoAnterior.notificarMail(reserva,this);
+        estadoNuevo.notificarMail(reserva,this);
     }
 }

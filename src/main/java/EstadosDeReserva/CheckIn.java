@@ -3,6 +3,7 @@ package EstadosDeReserva;
 import CatalogoTuristico.ServicioTuristico;
 import Excepciones.reservas.OperacionInvalidaException;
 import Clases.Reserva;
+import NotificacionesDeReserva.Fidelizacion;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class CheckIn implements EstadoDeReserva {
@@ -35,5 +36,13 @@ public class CheckIn implements EstadoDeReserva {
     @Override
     public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
         //notificador de email no actua sobre este estado
+    }
+
+    @Override
+    public void notificarFidelizacion(Reserva reserva, Fidelizacion fidelizacion) {
+    }
+
+    @Override
+    public void generarFactura(Reserva reserva) {
     }
 }

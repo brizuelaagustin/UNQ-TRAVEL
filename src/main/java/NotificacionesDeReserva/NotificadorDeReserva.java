@@ -2,11 +2,11 @@ package NotificacionesDeReserva;
 
 import Clases.Reserva;
 import EstadosDeReserva.EstadoDeReserva;
+import lombok.Getter;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+@Getter
 public class NotificadorDeReserva {
     private final Set<Subsistema> observadores = new LinkedHashSet<>();
 

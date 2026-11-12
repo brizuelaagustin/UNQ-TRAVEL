@@ -3,6 +3,7 @@ package EstadosDeReserva;
 import CatalogoTuristico.ServicioTuristico;
 import Clases.Reserva;
 import Excepciones.reservas.OperacionInvalidaException;
+import NotificacionesDeReserva.Fidelizacion;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Pendiente implements EstadoDeReserva {
@@ -41,6 +42,14 @@ public class Pendiente implements EstadoDeReserva {
     @Override
     public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
         //notificador de email no actua sobre este estado
+    }
+
+    @Override
+    public void notificarFidelizacion(Reserva reserva, Fidelizacion fidelizacion) {
+    }
+
+    @Override
+    public void generarFactura(Reserva reserva) {
     }
 
 }

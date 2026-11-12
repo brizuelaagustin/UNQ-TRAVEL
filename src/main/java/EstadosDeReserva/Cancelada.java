@@ -4,6 +4,7 @@ import CatalogoTuristico.ServicioTuristico;
 import Excepciones.reservas.OperacionInvalidaException;
 import Clases.Reserva;
 import Excepciones.reservas.reservaCancelada;
+import NotificacionesDeReserva.Fidelizacion;
 import NotificacionesDeReserva.NotificadorDeEmail;
 
 public class Cancelada implements EstadoDeReserva {
@@ -36,5 +37,19 @@ public class Cancelada implements EstadoDeReserva {
     @Override
     public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) { //notificador de email no actua sobre este estado
 
+    }
+
+    @Override
+    public void notificarFidelizacion(Reserva reserva, Fidelizacion fidelizacion) {
+        fidelizacion.getMailSender().enviarMail(
+                reserva.obtenerMailCliente(),
+                "¡Queremos que vuelvas!",
+                "Lamentamos la cancelación. Te regalamos un cupón del 5% de descuento en tu próxima compra.",
+                "CUPON9333"
+        );
+    }
+
+    @Override
+    public void generarFactura(Reserva reserva) {
     }
 }
