@@ -8,7 +8,7 @@ public class AtributoNumerico extends Atributo{
     @Override
     protected boolean tipoCorrecto(Object valor) {
         try {
-            Integer.valueOf(String.valueOf(valor));
+            Double.valueOf(String.valueOf(valor));
             return true;
         } catch (NumberFormatException e) {
             return false;

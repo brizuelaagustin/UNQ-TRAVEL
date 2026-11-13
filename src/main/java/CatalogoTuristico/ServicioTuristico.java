@@ -15,7 +15,6 @@ public abstract class ServicioTuristico {
     public String descripcion;
     public CronogramaServicio cronogramaServicio;
     public List<Atributo> atributosExtra;
-    private int cantidadVendida;
 
 
     public abstract float getPrecioBase();
@@ -48,14 +47,6 @@ public abstract class ServicioTuristico {
     public int cantidadVendidaEnPeriodo(LocalDate desde, LocalDate hasta) {
         int total = 0;
         return total;
-    }
-
-    public void incrementarCantidadVendida(){
-        this.cantidadVendida ++;
-    }
-
-    public void decrementarCantidadVendida(){
-        this.cantidadVendida --;
     }
 
 

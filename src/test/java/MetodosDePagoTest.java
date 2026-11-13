@@ -1,5 +1,6 @@
 import Clases.Cliente;
 import MetodoDePago.*;
+import MetodosDeTraslado.Direccion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
@@ -110,5 +111,15 @@ public class MetodosDePagoTest {
         when(apiTarjetaDeCredito.ejecutarTransaccion(montoAPagar, datosTarjeta)).thenReturn(false);
         String resultado = tarjetaDeCredito.procesarPago(montoAPagar, cliente);
         assertEquals("No se pudo ejecutar la transacción", resultado);
+    }
+
+    @Test
+    void test007_ElClienteGuardaTodosSusDatos() {
+        Cliente cliente1 = new Cliente("fernando.001", 5001230639L, "cvv 717", "fernando10@gmail.com");
+
+        assertEquals("fernando.001", cliente1.getAlias());
+        assertEquals(5001230639L, cliente1.getCbu());
+        assertEquals("cvv 717", cliente1.getDatosTarjeta());
+        assertEquals("fernando10@gmail.com", cliente1.getEmail());
     }
 }

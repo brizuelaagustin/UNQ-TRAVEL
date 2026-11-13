@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class AtributoDeTipoFecha extends Atributo{
-    public AtributoDeTipoFecha(String nombre, boolean obligatrio, Object valor) {
-        super(nombre, obligatrio, valor);
+    public AtributoDeTipoFecha(String nombre, boolean obligatorio, Object valor) {
+        super(nombre, obligatorio, valor);
     }
 
     @Override
