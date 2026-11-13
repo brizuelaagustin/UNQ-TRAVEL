@@ -4,13 +4,15 @@ import Atributos.Atributo;
 import Excepciones.ServicioInvalidoPorAtributoExtra;
 //import Reportes.Visitable;
 //import Reportes.Visitor;
+import Reportes.Visitable;
+import Reportes.Visitor;
 import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Getter
-public abstract class ServicioTuristico {
+public abstract class ServicioTuristico implements Visitable {
     public String nombre;
     public String descripcion;
     public CronogramaServicio cronogramaServicio;
@@ -21,7 +23,7 @@ public abstract class ServicioTuristico {
     public abstract float getPrecioFinal();
     public abstract Boolean perteneceACategoria(Categoria categoria);
     public abstract boolean tieneDisponibilidad();
-//    public abstract void aceptar(Visitor visitor);
+    public abstract void aceptar(Visitor visitor);
 
     public void quitarCupos(Integer cantidadDeCupos, LocalDate fechaInicio, LocalDate fechaFin) {
         cronogramaServicio.quitarCupos(cantidadDeCupos, fechaInicio, fechaFin);

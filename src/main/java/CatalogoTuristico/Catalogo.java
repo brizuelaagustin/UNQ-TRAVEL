@@ -1,5 +1,6 @@
 package CatalogoTuristico;
 
+import Clases.Reserva;
 import Excepciones.reservas.NoHayStockException;
 import Excepciones.reservas.ServicioNoEncontradoException;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import java.util.List;
 @Getter
 public class Catalogo {
     private List<ServicioTuristico> servicios = new ArrayList<>();
+    private List<Reserva> reservasHistorial = new ArrayList<>();
 
     public void registrarNuevoServicio (ServicioTuristico servicio){
         if(servicios.contains(servicio)){
@@ -37,4 +39,10 @@ public class Catalogo {
     public boolean tieneServicio(ServicioTuristico servicio) {
         return servicios.contains(servicio);
     }
+
+    public void registrarReserva(Reserva reserva){
+        this.reservasHistorial.add(reserva);
+    }
 }
+
+
