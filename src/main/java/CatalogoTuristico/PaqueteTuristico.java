@@ -58,7 +58,4 @@ public class PaqueteTuristico extends  ServicioTuristico {
         return true;
     }
 
-//    //public void aceptar(Visitor visitor){
-//        visitor.visitarPaqueteTuristico(this);
-//    }
 }

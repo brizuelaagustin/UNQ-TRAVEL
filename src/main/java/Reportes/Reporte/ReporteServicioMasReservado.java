@@ -1,96 +1,65 @@
 package Reportes.Reporte;
 
+import CatalogoTuristico.Catalogo;
 import CatalogoTuristico.PaqueteTuristico;
 import CatalogoTuristico.ServicioIndividual;
 import CatalogoTuristico.ServicioTuristico;
-import Reportes.Visitor;
+import Clases.Reserva;
+import Reportes.Exportador.Exportador;
 
 import java.time.LocalDate;
 import java.util.*;
 
-public class ReporteServicioMasReservado extends Reporte {
-    private LocalDate fechaInicial;
-    private LocalDate fechaFinal;
-    private List<ServicioTuristico> servicios;
+public class ReporteServicioMasReservado implements Reporte {
+    private final Catalogo catalogo;
+    private final LocalDate desde;
+    private final LocalDate hasta;
 
-    public ReporteServicioMasReservado(LocalDate inicio, LocalDate fin) {
-        this.fechaInicial = inicio;
-        this.fechaFinal = fin;
-        this.servicios = new ArrayList<>();
+    public ReporteServicioMasReservado(Catalogo catalogo, LocalDate desde, LocalDate hasta) {
+        this.catalogo = catalogo;
+        this.desde = desde;
+        this.hasta = hasta;
     }
 
-    public void visitarServicioIndividual(ServicioIndividual s) {
-        servicios.add(s);
+    @Override
+    public String aceptar(Exportador exportador) {
+        return exportador.visitarServicioMasReservado(this);
     }
 
-    public void visitarPaqueteTuristico(PaqueteTuristico p) {
-        servicios.add(p);
+    public LocalDate getDesde() {
+        return desde;
     }
 
-    public void reiniciar() {
-        servicios.clear();
+    public LocalDate getHasta() {
+        return hasta;
     }
 
-    public Map<String, String> resultado() {
-        List<ServicioTuristico> ordenados = new ArrayList<>(servicios);
+    // Servicios y paquetes del catálogo, del más vendido al menos vendido.
+    public List<ServicioTuristico> itemsOrdenadosPorVentas() {
+        List<ServicioTuristico> items = new ArrayList<>(catalogo.getServicios());
+        items.sort(Comparator.comparingInt(this::unidadesVendidas).reversed());
+        return items;
+    }
 
-        for (int i = 0; i < ordenados.size(); i++) {
-            for (int j = i + 1; j < ordenados.size(); j++) {
-                if (ordenados.get(j).cantidadVendidaEnPeriodo(this.fechaInicial, this.fechaFinal) > ordenados.get(i).cantidadVendidaEnPeriodo(this.fechaInicial, this.fechaFinal)) {
-                    ServicioTuristico servicio = ordenados.get(i);
-                    ordenados.set(i, ordenados.get(j));
-                    ordenados.set(j, servicio);
-                }
+    // Una reserva pertenece al período según su fecha de inicio.
+    public int unidadesVendidas(ServicioTuristico item) {
+        int total = 0;
+        for (Reserva reserva : catalogo.getReservasHistorial()) {
+            if (enPeriodo(reserva.getFechaInicio())) {
+                total += reserva.cantidadDeServicio(item);
             }
         }
-
-        Map<String, String> datos = new LinkedHashMap<>();
-        for (ServicioTuristico s : ordenados) {
-            datos.put(s.getNombre(),
-                    s.cantidadVendidaEnPeriodo(this.fechaInicial, this.fechaFinal) + " vendidos, precio promedio $" + s.PrecioPromedioCobradoEnPeriodo(this.fechaInicial, this.fechaFinal));
-        }
-        return datos;
+        return total;
     }
 
-
-
-    private final List<LineaDeReporte> lineas;
-
-    public ReporteProductosMasVendidos(Tienda tienda, LocalDate fechaInicio, LocalDate fechaFin) {
-        Map<String, Integer> cantidades = new HashMap<>();
-        Map<String, Double> recaudacionTotal = new HashMap<>();
-
-        List<Pedido> pedidosDelPeriodo = tienda.historialdePedidosDeTodasLasSucursales().stream()
-                .filter(pedido -> !pedido.getFecha().isBefore(fechaInicio) && !pedido.getFecha().isAfter(fechaFin))
-                .collect(Collectors.toList());
-
-        for (Pedido pedido : pedidosDelPeriodo) {
-            pedido.getCarritoDeProductos().forEach((producto, cantidad) -> {
-                String nombre = producto.getNombre();
-                cantidades.put(nombre, cantidades.getOrDefault(nombre, 0) + cantidad);
-
-                double totalCobrado = producto.getPrecioFinal() * cantidad;
-                recaudacionTotal.put(nombre, recaudacionTotal.getOrDefault(nombre, 0.0) + totalCobrado);
-            });
-        }
-
-        lineas = cantidades.entrySet().stream()
-                .map(entry -> {
-                    String nombre = entry.getKey();
-                    int cantidad = entry.getValue();
-                    double promedio = recaudacionTotal.get(nombre) / cantidad;
-                    return new LineaDeReporte(nombre, cantidad, promedio);
-                })
-                .sorted((l1, l2) -> Integer.compare(l2.getCantidadVendida(), l1.getCantidadVendida()))
-                .collect(Collectors.toList());
+    // No se guarda el precio de cada venta, así que lo cobrado por unidad es el
+    // precio final vigente (ya incluye el descuento del servicio o del paquete).
+    public float precioPromedioCobrado(ServicioTuristico item) {
+        return item.getPrecioFinal();
     }
 
-    public List<LineaDeReporte> getLineas() {
-        return lineas;
-    }
-
-    public String exportar(FormatoDeExportacionDeReporte visitor) {
-        return visitor.visit(this);
+    private boolean enPeriodo(LocalDate fecha) {
+        return !fecha.isBefore(desde) && !fecha.isAfter(hasta);
     }
 }
 

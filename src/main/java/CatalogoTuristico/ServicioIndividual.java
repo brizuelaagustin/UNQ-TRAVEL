@@ -42,7 +42,4 @@ public class ServicioIndividual extends ServicioTuristico{
         return (this.cronogramaServicio.getCuposPorDia().size() > 0);
     }
 
-//    public void aceptar(Visitor visitor){
-//        visitor.visitarServicioIndividual(this);
-//    }
 }

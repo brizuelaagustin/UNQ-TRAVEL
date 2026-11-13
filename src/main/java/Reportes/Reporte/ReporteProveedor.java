@@ -1,46 +1,52 @@
 package Reportes.Reporte;
 
+import CatalogoTuristico.Catalogo;
 import CatalogoTuristico.PaqueteTuristico;
 import CatalogoTuristico.ServicioIndividual;
 import CatalogoTuristico.ServicioTuristico;
+import Reportes.Exportador.Exportador;
 
 import java.util.*;
 
-public class ReporteProveedor extends Reporte {
+public class ReporteProveedor implements Reporte {
 
-    private Map<String, Integer> cantidadPorProveedor = new HashMap<>();
+    private final Catalogo catalogo;
 
-    public void visitarServicioIndividual(ServicioIndividual s) {
-        String proveedor = s.getProveedor();
-
-        if (!cantidadPorProveedor.containsKey(proveedor)) {
-            cantidadPorProveedor.put(proveedor, 0);
-        }
-
-        int cantidadActual = cantidadPorProveedor.get(proveedor);
-        cantidadPorProveedor.put(proveedor, cantidadActual + 1);
+    public ReporteProveedor(Catalogo catalogo) {
+        this.catalogo = catalogo;
     }
 
-
-    public void visitarPaqueteTuristico(PaqueteTuristico p) {
-        for (ServicioTuristico s : p.getPaquetes().keySet()) {
-            s.aceptar(this);
-        }
+    @Override
+    public String aceptar(Exportador exportador) {
+        return exportador.visitarProveedor(this);
     }
 
-    public void reiniciar() {
-        cantidadPorProveedor.clear();
+    public List<String> proveedores() {
+        return new ArrayList<>(serviciosPorProveedor().keySet());
     }
 
-    public Map<String, String> resultado() {
+    // Porcentaje del catálogo que depende del proveedor, con un decimal.
+    public double porcentaje(String proveedor) {
+        Map<String, Integer> cantidades = serviciosPorProveedor();
         int total = 0;
-        for (int cantidad : cantidadPorProveedor.values()) {
+        for (int cantidad : cantidades.values()) {
             total += cantidad;
         }
-        Map<String, String> datos = new HashMap<>();
-        for (Map.Entry<String, Integer> e : cantidadPorProveedor.entrySet()) {
-            datos.put(e.getKey(), (e.getValue() * 100 / total) + "%");
+        if (total == 0) {
+            return 0;
         }
-        return datos;
+        double porcentaje = cantidades.getOrDefault(proveedor, 0) * 100.0 / total;
+        return Math.round(porcentaje * 10) / 10.0;
+    }
+
+    private Map<String, Integer> serviciosPorProveedor() {
+        Map<String, Integer> cantidades = new LinkedHashMap<>();
+        for (ServicioTuristico item : catalogo.getServicios()) {
+            if (item instanceof ServicioIndividual) {   // el paquete no tiene proveedor propio
+                String proveedor = ((ServicioIndividual) item).getProveedor();
+                cantidades.put(proveedor, cantidades.getOrDefault(proveedor, 0) + 1);
+            }
+        }
+        return cantidades;
     }
 }

@@ -1,6 +1,7 @@
 package Clases;
 
 import CatalogoTuristico.ServicioTuristico;
+import EstadosDeReserva.Cancelada;
 import Excepciones.reservas.MetodoDeTrasladoNoDisponibleException;
 import Excepciones.reservas.NoHayStockException;
 import Excepciones.reservas.ServicioNoEncontradoException;
@@ -144,4 +145,5 @@ public class Reserva {
     public String obtenerMailCliente() {
         return cliente.getEmail();
     }
+
 }

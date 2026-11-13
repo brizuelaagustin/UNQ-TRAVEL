@@ -1,50 +1,76 @@
 package Reportes.Reporte;
 
-import CatalogoTuristico.Categoria;
-import CatalogoTuristico.PaqueteTuristico;
-import CatalogoTuristico.ServicioIndividual;
-import CatalogoTuristico.ServicioTuristico;
-import Reportes.Visitor;
+import CatalogoTuristico.*;
+import Clases.Reserva;
+import Reportes.Exportador.Exportador;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ReporteOcupacion extends Reporte {
-    private Map<Categoria, Integer> totalPorCategoria = new HashMap<>();
-    private Map<Categoria, Integer> reservadosPorCategoria = new HashMap<>();
+public class ReporteOcupacion implements Reporte {
+    private final Catalogo catalogo;
+    private final LocalDate desde;
+    private final LocalDate hasta;
 
-    public void visitarServicioIndividual(ServicioIndividual s) {
-        Categoria categoria = s.getCategoria();
-
-        if (!totalPorCategoria.containsKey(categoria)) {
-            totalPorCategoria.put(categoria, 0);
-            reservadosPorCategoria.put(categoria, 0);
-        }
-        int totalActual = totalPorCategoria.get(categoria);
-        int reservadosActual = reservadosPorCategoria.get(categoria);
-
-        totalPorCategoria.put(categoria, totalActual + s.getCupoTotal());
-        reservadosPorCategoria.put(categoria, reservadosActual + s.getCupoReservado());
+    public ReporteOcupacion(Catalogo catalogo, LocalDate desde, LocalDate hasta) {
+        this.catalogo = catalogo;
+        this.desde = desde;
+        this.hasta = hasta;
     }
 
-    public void visitarPaqueteTuristico(PaqueteTuristico p) {
-        for (ServicioTuristico s : p.getPaquetes().keySet()) {
-            s.aceptar(this);
-        }
+    @Override
+    public String aceptar(Exportador exportador) {
+        return exportador.visitarOcupacion(this);
     }
 
-    public void reiniciar() {
-        totalPorCategoria.clear();
-        reservadosPorCategoria.clear();
+    public LocalDate getDesde() { return desde; }
+
+    public LocalDate getHasta() { return hasta; }
+
+    // Lo que todavía se puede reservar (el cronograma guarda los cupos que quedan por día).
+    public int cuposLibres(Categoria categoria) {
+        int libres = 0;
+        for (ServicioTuristico item : catalogo.getServicios()) {
+            if (item.perteneceACategoria(categoria)) {
+                for (LocalDate dia : dias()) {
+                    libres += item.getCronogramaServicio().getCuposPorDia().getOrDefault(dia, 0);
+                }
+            }
+        }
+        return libres;
     }
 
-    public Map<String, String> resultado() {
-        Map<String, String> datos = new HashMap<>();
-        for (Categoria categoria : totalPorCategoria.keySet()) {
-            int total = totalPorCategoria.get(categoria);
-            int reservados = reservadosPorCategoria.get(categoria);
-            datos.put(categoria.toString(), reservados + " reservados, " + (total - reservados) + " libres de " + total);
+    // Lo que ya se reservó: unidades de cada reserva, por cada día del período que la reserva cubre.
+    public int cuposReservados(Categoria categoria) {
+        int reservados = 0;
+        for (ServicioTuristico item : catalogo.getServicios()) {
+            if (item.perteneceACategoria(categoria)) {
+                for (LocalDate dia : dias()) {
+                    for (Reserva reserva : catalogo.getReservasHistorial()) {
+                        if (cubre(reserva, dia)) {
+                            reservados += reserva.cantidadDeServicio(item);
+                        }
+                    }
+                }
+            }
         }
-        return datos;
+        return reservados;
+    }
+
+    public int cuposTotales(Categoria categoria) {
+        return cuposLibres(categoria) + cuposReservados(categoria);
+    }
+
+    private boolean cubre(Reserva reserva, LocalDate dia) {
+        return !dia.isBefore(reserva.getFechaInicio()) && !dia.isAfter(reserva.getFechaFin());
+    }
+
+    private List<LocalDate> dias() {
+        List<LocalDate> dias = new ArrayList<>();
+        for (LocalDate dia = desde; !dia.isAfter(hasta); dia = dia.plusDays(1)) {
+            dias.add(dia);
+        }
+        return dias;
     }
 }
