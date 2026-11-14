@@ -146,4 +146,8 @@ public class Reserva {
         return cliente.getEmail();
     }
 
+    public boolean estaCancelada(){
+        return this.estadoDeReserva.esCancelada();
+    }
+
 }

@@ -42,8 +42,8 @@ public class ReporteProveedor implements Reporte {
     private Map<String, Integer> serviciosPorProveedor() {
         Map<String, Integer> cantidades = new LinkedHashMap<>();
         for (ServicioTuristico item : catalogo.getServicios()) {
-            if (item instanceof ServicioIndividual) {   // el paquete no tiene proveedor propio
-                String proveedor = ((ServicioIndividual) item).getProveedor();
+            String proveedor = item.getProveedor();
+            if (proveedor != null) {   // los paquetes no tienen proveedor propio
                 cantidades.put(proveedor, cantidades.getOrDefault(proveedor, 0) + 1);
             }
         }

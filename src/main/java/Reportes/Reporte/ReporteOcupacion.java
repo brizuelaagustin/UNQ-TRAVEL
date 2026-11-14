@@ -48,7 +48,7 @@ public class ReporteOcupacion implements Reporte {
             if (item.perteneceACategoria(categoria)) {
                 for (LocalDate dia : dias()) {
                     for (Reserva reserva : catalogo.getReservasHistorial()) {
-                        if (cubre(reserva, dia)) {
+                        if (!reserva.estaCancelada() &&  cubre(reserva, dia)) {
                             reservados += reserva.cantidadDeServicio(item);
                         }
                     }

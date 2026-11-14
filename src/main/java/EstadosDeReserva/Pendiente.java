@@ -11,6 +11,7 @@ public class Pendiente implements EstadoDeReserva {
     public void confirmarReserva(Reserva reserva) {
         reserva.actualizarReserva(new Confirmada());
         reserva.removerCupos();
+        reserva.getCatalogo().registrarReserva(reserva);
     }
 
     public void cancelarReserva(Reserva reserva) {

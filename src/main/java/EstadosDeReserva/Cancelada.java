@@ -52,4 +52,6 @@ public class Cancelada implements EstadoDeReserva {
     @Override
     public void generarFactura(Reserva reserva) {
     }
+
+    public boolean esCancelada(){return true;};
 }

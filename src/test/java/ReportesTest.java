@@ -66,7 +66,6 @@ public class ReportesTest {
             reserva.agregarServicio(b, cantB);
         }
         reserva.confirmarReserva();
-        catalogo.registrarReserva(reserva);
     }
 
 

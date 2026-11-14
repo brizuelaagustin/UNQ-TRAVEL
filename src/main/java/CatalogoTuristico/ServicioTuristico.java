@@ -15,6 +15,7 @@ public abstract class ServicioTuristico {
     public String descripcion;
     public CronogramaServicio cronogramaServicio;
     public List<Atributo> atributosExtra;
+    public String proveedor;
 
 
     public abstract float getPrecioBase();

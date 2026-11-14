@@ -14,9 +14,9 @@ public class ExportadorHTML implements Exportador {
     @Override
     public String visitarServicioMasReservado(ReporteServicioMasReservado reporte) {
         String html = abrir("Servicios más reservados (" + reporte.getDesde() + " a " + reporte.getHasta() + ")");
-        html += fila("th", "Servicio", "Unidades", "Precio promedio cobrado");
+        html += fila("th", List.of("Servicio", "Unidades", "Precio promedio cobrado"));
         for (ServicioTuristico item : reporte.itemsOrdenadosPorVentas()) {
-            html += fila("td", item.getNombre(), reporte.unidadesVendidas(item), reporte.precioPromedioCobrado(item));
+            html += fila("td", List.of(item.getNombre(), reporte.unidadesVendidas(item), reporte.precioPromedioCobrado(item)));
         }
         return html + cerrar();
     }
@@ -24,10 +24,10 @@ public class ExportadorHTML implements Exportador {
     @Override
     public String visitarOcupacion(ReporteOcupacion reporte) {
         String html = abrir("Ocupación y cupo disponible (" + reporte.getDesde() + " a " + reporte.getHasta() + ")");
-        html += fila("th", "Categoría", "Cupos totales", "Reservados", "Libres");
+        html += fila("th", List.of("Categoría", "Cupos totales", "Reservados", "Libres"));
         for (Categoria categoria : Categoria.values()) {
-            html += fila("td", categoria, reporte.cuposTotales(categoria),
-                    reporte.cuposReservados(categoria), reporte.cuposLibres(categoria));
+            html += fila("td", List.of(categoria, reporte.cuposTotales(categoria),
+                    reporte.cuposReservados(categoria), reporte.cuposLibres(categoria)));
         }
         return html + cerrar();
     }
@@ -35,9 +35,9 @@ public class ExportadorHTML implements Exportador {
     @Override
     public String visitarProveedor(ReporteProveedor reporte) {
         String html = abrir("Exposición por proveedor");
-        html += fila("th", "Proveedor", "Porcentaje");
+        html += fila("th", List.of("Proveedor", "Porcentaje"));
         for (String proveedor : reporte.proveedores()) {
-            html += fila("td", proveedor, reporte.porcentaje(proveedor) + "%");
+            html += fila("td", List.of(proveedor, reporte.porcentaje(proveedor) + "%"));
         }
         return html + cerrar();
     }
@@ -52,7 +52,7 @@ public class ExportadorHTML implements Exportador {
                 + "    <table border=\"1\">\n";
     }
 
-    private String fila(String etiqueta, Object... celdas) {
+    private String fila(String etiqueta, List<Object> celdas) {
         String fila = "      <tr>\n";
         for (Object celda : celdas) {
             fila += "        <" + etiqueta + ">" + escapar(String.valueOf(celda)) + "</" + etiqueta + ">\n";

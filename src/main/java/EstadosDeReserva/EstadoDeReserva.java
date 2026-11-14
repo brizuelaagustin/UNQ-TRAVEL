@@ -17,4 +17,5 @@ public interface EstadoDeReserva {
     void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail);
     void notificarFidelizacion(Reserva reserva, Fidelizacion fidelizacion);
     void generarFactura(Reserva reserva);
+    default boolean esCancelada(){return false;};
 }

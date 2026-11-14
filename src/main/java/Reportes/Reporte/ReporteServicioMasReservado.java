@@ -45,7 +45,7 @@ public class ReporteServicioMasReservado implements Reporte {
     public int unidadesVendidas(ServicioTuristico item) {
         int total = 0;
         for (Reserva reserva : catalogo.getReservasHistorial()) {
-            if (enPeriodo(reserva.getFechaInicio())) {
+            if (!reserva.estaCancelada() && enPeriodo(reserva.getFechaInicio())) {
                 total += reserva.cantidadDeServicio(item);
             }
         }

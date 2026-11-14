@@ -13,39 +13,37 @@ public class ExportadorCSV implements Exportador {
 
     @Override
     public String visitarServicioMasReservado(ReporteServicioMasReservado reporte) {
-        String csv = linea("Servicio", "Unidades", "Precio promedio cobrado");
+        String csv = linea(List.of("Servicio", "Unidades", "Precio promedio cobrado"));
         for (ServicioTuristico item : reporte.itemsOrdenadosPorVentas()) {
-            csv += linea(item.getNombre(), reporte.unidadesVendidas(item), reporte.precioPromedioCobrado(item));
+            csv += linea(List.of(item.getNombre(), reporte.unidadesVendidas(item), reporte.precioPromedioCobrado(item)));
         }
         return csv;
     }
 
     @Override
     public String visitarOcupacion(ReporteOcupacion reporte) {
-        String csv = linea("Categoría", "Cupos totales", "Reservados", "Libres");
+        String csv = linea(List.of("Categoría", "Cupos totales", "Reservados", "Libres"));
         for (Categoria categoria : Categoria.values()) {
-            csv += linea(categoria, reporte.cuposTotales(categoria),
-                    reporte.cuposReservados(categoria), reporte.cuposLibres(categoria));
+            csv += linea(List.of(categoria, reporte.cuposTotales(categoria),
+                    reporte.cuposReservados(categoria), reporte.cuposLibres(categoria)));
         }
         return csv;
     }
 
     @Override
     public String visitarProveedor(ReporteProveedor reporte) {
-        String csv = linea("Proveedor", "Porcentaje");
+        String csv = linea(List.of("Proveedor", "Porcentaje"));
         for (String proveedor : reporte.proveedores()) {
-            csv += linea(proveedor, reporte.porcentaje(proveedor) + "%");
+            csv += linea(List.of(proveedor, reporte.porcentaje(proveedor) + "%"));
         }
         return csv;
     }
 
-    private String linea(Object... celdas) {
+    private String linea(List<Object> celdas) {
         String linea = "";
-        for (int i = 0; i < celdas.length; i++) {
-            if (i > 0) {
-                linea += ",";
-            }
-            linea += escapar(String.valueOf(celdas[i]));
+        for (int i = 0; i < celdas.size(); i++) {
+            if (i > 0) linea += ",";
+            linea += escapar(String.valueOf(celdas.get(i)));
         }
         return linea + "\n";
     }

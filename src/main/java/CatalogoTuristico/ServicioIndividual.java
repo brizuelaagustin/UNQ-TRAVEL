@@ -8,7 +8,6 @@ import java.util.ArrayList;
 @Getter
 public class ServicioIndividual extends ServicioTuristico{
     private Integer id;
-    private String proveedor;
     private Categoria categoria;
     private float descuento;
     private float precioBase;
