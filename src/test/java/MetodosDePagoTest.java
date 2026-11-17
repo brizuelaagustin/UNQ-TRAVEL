@@ -115,7 +115,7 @@ public class MetodosDePagoTest {
 
     @Test
     void test007_ElClienteGuardaTodosSusDatos() {
-        Cliente cliente1 = new Cliente("fernando.001", 5001230639L, "cvv 717", "fernando10@gmail.com");
+        Cliente cliente1 = new Cliente("fernando.001", 5001230639L, "cvv 717", "fernando10@gmail.com", 400);
 
         assertEquals("fernando.001", cliente1.getAlias());
         assertEquals(5001230639L, cliente1.getCbu());

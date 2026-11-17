@@ -42,7 +42,7 @@ public class Pendiente implements EstadoDeReserva {
 
     @Override
     public void notificarMail(Reserva reserva, NotificadorDeEmail notificadorDeEmail) {
-        //notificador de email no actua sobre este estado
+        throw new RuntimeException("No se puede notificar esta reserva");
     }
 
     @Override

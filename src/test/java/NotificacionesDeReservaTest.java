@@ -184,5 +184,15 @@ public class NotificacionesDeReservaTest {
                 any()
         );
     }
+    @Test
+    void test13_UnaReservaPendienteNoPuedeRecibirUnaNotificacion(){
+        EstadoDeReserva estadoPendiente = new Pendiente();
+        try {
+            estadoPendiente.notificarMail(reserva, notificadorDeEmail);
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "No se puede notificar esta reserva");
+        }
+
+    }
 
 }

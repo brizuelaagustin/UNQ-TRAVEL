@@ -86,6 +86,7 @@ public class Reserva {
         for(Map.Entry<ServicioTuristico,Integer> s: servicios.entrySet()){
             total += s.getKey().getPrecioFinal() * s.getValue();
         }
+        total = total + estrategiaTraslado.calcularCosto(this);
         return total;
     }
 
@@ -150,4 +151,11 @@ public class Reserva {
         return this.estadoDeReserva.esCancelada();
     }
 
+    public void devolverCupos() {
+        servicios.keySet().stream().forEach(servicioTuristico -> servicioTuristico.devolverCupos(servicios.get(servicioTuristico), fechaInicio, fechaFin));
+    }
+
+    public void devolverTasas() {
+        cliente.recuperarTasas(estrategiaTraslado.calcularCosto(this));
+    }
 }

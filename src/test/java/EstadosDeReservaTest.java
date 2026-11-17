@@ -550,4 +550,8 @@ public class EstadosDeReservaTest {
         reservaPendiente8.agregarServicio(paqueteTuristico, 1);
         assertEquals(4320, reservaPendiente8.getPrecio());
     }
+    @Test
+    void test052_UnaReservaCanceladaEstaCancelada(){
+        assertTrue(reservaCancelada.estaCancelada());
+    }
 }

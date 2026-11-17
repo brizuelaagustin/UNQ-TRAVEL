@@ -12,6 +12,8 @@ public class CheckIn implements EstadoDeReserva {
     }
     public void cancelarReserva(Reserva reserva){
         reserva.actualizarReserva(new Cancelada());
+        reserva.devolverCupos();
+        reserva.devolverTasas();
     }
     public void checkInReserva(Reserva reserva){
         throw new OperacionInvalidaException("Operacion invalida, la reserva ya esta en checkIn");

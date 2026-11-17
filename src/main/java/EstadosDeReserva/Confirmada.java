@@ -12,6 +12,7 @@ public class Confirmada implements EstadoDeReserva {
     }
     public void cancelarReserva(Reserva reserva){
         reserva.actualizarReserva(new Cancelada());
+        reserva.devolverCupos();
     }
     public void checkInReserva(Reserva reserva){
         reserva.actualizarReserva(new CheckIn());
