@@ -1,5 +1,6 @@
 package CatalogoTuristico;
 
+import BusquedaEnCatalogo.Criterio;
 import Clases.Reserva;
 import Excepciones.reservas.NoHayStockException;
 import Excepciones.reservas.ServicioNoEncontradoException;
@@ -42,6 +43,16 @@ public class Catalogo {
 
     public void registrarReserva(Reserva reserva){
         this.reservasHistorial.add(reserva);
+    }
+
+    public List<ServicioTuristico> buscar(Criterio criterio) {
+        List<ServicioTuristico> resultado = new ArrayList<>();
+        for (ServicioTuristico s : servicios) {
+            if (criterio.satisface(s)) {
+                resultado.add(s);
+            }
+        }
+        return resultado;
     }
 }
 

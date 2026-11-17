@@ -1,8 +1,8 @@
-package BusquedaEnCatalogo.CriteriosSimples;
+package BusquedaEnCatalogo;
 
 import CatalogoTuristico.ServicioTuristico;
 
-public class CriterioNombre extends CriterioSimple {
+public class CriterioNombre implements Criterio{
     private String nombreBuscado;
 
     public CriterioNombre(String nombreBuscado){

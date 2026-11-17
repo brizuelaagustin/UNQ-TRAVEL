@@ -8,16 +8,13 @@ import java.util.List;
 import java.util.Map;
 
 import BusquedaEnCatalogo.*;
-import BusquedaEnCatalogo.CriteriosSimples.*;
-import BusquedaEnCatalogo.CriteriosComplejos.*;
 import CatalogoTuristico.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BusquedaEnCatalogoTest {
 
-    BusquedaEnCatalogo buscador;
-    List<ServicioTuristico> servicios;
+    Catalogo catalogo;
     Criterio criterioPorNombre;
     Criterio criterioPorPrecioMaximo;
     Criterio criterioPorPrecioMaximo2;
@@ -44,6 +41,7 @@ public class BusquedaEnCatalogoTest {
         cronogramaConCupos2.getCuposPorDia().put(LocalDate.of(2026, 12, 1), 3);
 
         CronogramaServicio cronogramaSinCupos = new CronogramaServicio();
+        catalogo = new Catalogo();
 
         hotel = new ServicioIndividual(1, "Hotel Central", "Hotel en el centro", "Operador A",
                 0f, 15000f, Categoria.ALOJAMIENTO, cronogramaConCupos1);
@@ -62,11 +60,10 @@ public class BusquedaEnCatalogoTest {
         itemsKit.put(hotel, 1);
         pack = new PaqueteTuristico("Pack Escapada Urbana", "Hotel + museo", itemsPack, 0.1f, cronogramaConCupos1);
         pack2 = new PaqueteTuristico("Kit Gran Tour", "Pack + vuelo", itemsKit, 0.05f, cronogramaConCupos1);
-        servicios = new ArrayList<>();
-        servicios.add(hotel);
-        servicios.add(museo);
-        servicios.add(vuelo);
-        servicios.add(pack);
+        catalogo.getServicios().add(hotel);
+        catalogo.getServicios().add(museo);
+        catalogo.getServicios().add(vuelo);
+        catalogo.getServicios().add(pack);
 
         criterioPorNombre = new CriterioNombre("hotel");
         criterioPorPrecioMaximo = new CriterioPrecioMaximo(15000f);
@@ -76,7 +73,6 @@ public class BusquedaEnCatalogoTest {
         criterioAND = new CriterioAND(criterioPorCategoria, criterioPorDisponibilidad);
         criterioNOT = new CriterioNOT(criterioPorCategoriaExcursion);
         criterioOR = new CriterioOR(criterioPorNombre, new CriterioCategoria(Categoria.VUELO));
-        buscador = new BusquedaEnCatalogo(servicios);
     }
     // Criterios Simples
 
@@ -84,68 +80,68 @@ public class BusquedaEnCatalogoTest {
 
     @Test
     void test002_CriterioPorNombreTiene1Servicio() {
-        assertEquals(buscador.buscar(criterioPorNombre).size(), 1);
+        assertEquals(catalogo.buscar(criterioPorNombre).size(), 1);
     }
 
     @Test
     void test0003_CriterioPorNombreContieneAlHotel() {
-        assertTrue(buscador.buscar(criterioPorNombre).contains(hotel));
+        assertTrue(catalogo.buscar(criterioPorNombre).contains(hotel));
     }
 
     @Test
     void test004_CriterioPorNombreNoContieneAlMuseo() {
-        assertFalse(buscador.buscar(criterioPorNombre).contains(museo));
+        assertFalse(catalogo.buscar(criterioPorNombre).contains(museo));
     }
 
     @Test
     void test005_CriterioPorNombreNoDistingueMayusculas() {
         Criterio mayusculas = new CriterioNombre("HOTEL");
-        assertTrue(buscador.buscar(mayusculas).contains(hotel));
+        assertTrue(catalogo.buscar(mayusculas).contains(hotel));
     }
 
     //  Criterio por precio máximo
 
     @Test
     void test006_CriterioPorPrecioMaximoTiene2Servicios() {
-        assertEquals(buscador.buscar(criterioPorPrecioMaximo).size(), 2);
+        assertEquals(catalogo.buscar(criterioPorPrecioMaximo).size(), 2);
     }
 
     @Test
     void test007_CriterioPorPrecioMaximoContieneAlHotelQueEstaEnElLimite() {
-        assertTrue(buscador.buscar(criterioPorPrecioMaximo).contains(hotel));
+        assertTrue(catalogo.buscar(criterioPorPrecioMaximo).contains(hotel));
     }
 
     @Test
     void test008_CriterioPorPrecioMaximoContieneAlMuseo() {
-        assertTrue(buscador.buscar(criterioPorPrecioMaximo).contains(museo));
+        assertTrue(catalogo.buscar(criterioPorPrecioMaximo).contains(museo));
     }
 
     @Test
     void test009_CriterioPorPrecioMaximoNoContieneAlPack() {
-        assertFalse(buscador.buscar(criterioPorPrecioMaximo).contains(pack));
+        assertFalse(catalogo.buscar(criterioPorPrecioMaximo).contains(pack));
     }
 
     @Test
     void test010_CriterioPorPrecioMaximo2EsVacio() {
         criterioPorPrecioMaximo2 = new CriterioPrecioMaximo(3000f);
-        assertTrue(buscador.buscar(criterioPorPrecioMaximo2).isEmpty());
+        assertTrue(catalogo.buscar(criterioPorPrecioMaximo2).isEmpty());
     }
 
     //  Criterio por categoría
 
     @Test
     void test011_CriterioPorCategoriaTiene1Servicio() {
-        assertEquals(1, buscador.buscar(criterioPorCategoria).size());
+        assertEquals(1, catalogo.buscar(criterioPorCategoria).size());
     }
 
     @Test
     void test012_CriterioPorCategoriaContieneAlHotel() {
-        assertTrue(buscador.buscar(criterioPorCategoria).contains(hotel));
+        assertTrue(catalogo.buscar(criterioPorCategoria).contains(hotel));
     }
 
     @Test
     void test013_CriterioPorCategoriaNoContieneAlMuseo() {
-        assertFalse(buscador.buscar(criterioPorCategoria).contains(museo));
+        assertFalse(catalogo.buscar(criterioPorCategoria).contains(museo));
     }
 
 
@@ -153,25 +149,24 @@ public class BusquedaEnCatalogoTest {
 
     @Test
     void test014_CriterioPorDisponibilidadTiene2Servicios() {
-        assertEquals(3, buscador.buscar(criterioPorDisponibilidad).size());
+        assertEquals(3, catalogo.buscar(criterioPorDisponibilidad).size());
     }
 
     @Test
     void test015_CriterioPorDisponibilidadContieneAlHotelYAlVuelo() {
-        assertTrue(buscador.buscar(criterioPorDisponibilidad).contains(hotel));
-        assertTrue(buscador.buscar(criterioPorDisponibilidad).contains(vuelo));
+        assertTrue(catalogo.buscar(criterioPorDisponibilidad).contains(hotel));
+        assertTrue(catalogo.buscar(criterioPorDisponibilidad).contains(vuelo));
     }
 
     @Test
     void test016_CriterioPorDisponibilidadContieneAlMuseo() {
-        assertTrue(buscador.buscar(criterioPorDisponibilidad).contains(museo));
+        assertTrue(catalogo.buscar(criterioPorDisponibilidad).contains(museo));
     }
 
     @Test
     void test017_CriterioPorDisponibilidadNoContieneAlPackPorqueElMuseoNoTieneCupo() {
-        assertFalse(buscador.buscar(criterioPorDisponibilidad).contains(pack));
+        assertFalse(catalogo.buscar(criterioPorDisponibilidad).contains(pack));
     }
-
 
     // Criterios Complejos
 
@@ -179,54 +174,54 @@ public class BusquedaEnCatalogoTest {
 
     @Test
     void test018_CriterioANDTiene1Servicio() {
-        assertEquals(1, buscador.buscar(criterioAND).size());
+        assertEquals(1, catalogo.buscar(criterioAND).size());
     }
 
     @Test
     void test019_CriterioANDContieneAlHotel() {
-        assertTrue(buscador.buscar(criterioAND).contains(hotel));
+        assertTrue(catalogo.buscar(criterioAND).contains(hotel));
     }
 
     @Test
     void test020_CriterioANDNoContieneAlPack() {
-        assertFalse(buscador.buscar(criterioAND).contains(pack));
+        assertFalse(catalogo.buscar(criterioAND).contains(pack));
     }
 
     //  NOT
 
     @Test
     void test021_CriterioNOTTiene2Servicios() {
-        assertEquals(buscador.buscar(criterioNOT).size(), 2);
+        assertEquals(catalogo.buscar(criterioNOT).size(), 2);
     }
 
     @Test
     void test022_CriterioNOTContieneAlHotelYAlVuelo() {
-        assertTrue(buscador.buscar(criterioNOT).contains(hotel));
-        assertTrue(buscador.buscar(criterioNOT).contains(vuelo));
+        assertTrue(catalogo.buscar(criterioNOT).contains(hotel));
+        assertTrue(catalogo.buscar(criterioNOT).contains(vuelo));
     }
 
     @Test
     void test023_CriterioNOTNoContieneAlMuseoNiAlPack() {
-        assertFalse(buscador.buscar(criterioNOT).contains(museo));
-        assertFalse(buscador.buscar(criterioNOT).contains(pack));
+        assertFalse(catalogo.buscar(criterioNOT).contains(museo));
+        assertFalse(catalogo.buscar(criterioNOT).contains(pack));
     }
 
     //  OR
 
     @Test
     void test024_CriterioORTiene2Servicios() {
-        assertEquals(buscador.buscar(criterioOR).size(), 2);
+        assertEquals(catalogo.buscar(criterioOR).size(), 2);
     }
 
     @Test
     void test025_CriterioORContieneAlHotelYAlVuelo() {
-        assertTrue(buscador.buscar(criterioOR).contains(hotel));
-        assertTrue(buscador.buscar(criterioOR).contains(vuelo));
+        assertTrue(catalogo.buscar(criterioOR).contains(hotel));
+        assertTrue(catalogo.buscar(criterioOR).contains(vuelo));
     }
 
     @Test
     void test026_CriterioORNoContieneAlMuseo() {
-        assertFalse(buscador.buscar(criterioOR).contains(museo));
+        assertFalse(catalogo.buscar(criterioOR).contains(museo));
     }
 
     //  Criterios complejos mezclados
@@ -237,15 +232,15 @@ public class BusquedaEnCatalogoTest {
         criterioANDcompuesto = new CriterioAND(
                 new CriterioNOT(criterioPorPrecioMaximo),
                 new CriterioOR(criterioPorCategoria, criterioPorCategoriaExcursion));
-        assertEquals(buscador.buscar(criterioANDcompuesto).size(), 1);
-        assertTrue(buscador.buscar(criterioANDcompuesto).contains(pack));
-        assertFalse(buscador.buscar(criterioANDcompuesto).contains(hotel));
+        assertEquals(catalogo.buscar(criterioANDcompuesto).size(), 1);
+        assertTrue(catalogo.buscar(criterioANDcompuesto).contains(pack));
+        assertFalse(catalogo.buscar(criterioANDcompuesto).contains(hotel));
     }
 
     @Test
     void test028_CriterioNOTDeNOTEquivaleAlCriterioOriginal() {
         Criterio dobleNot = new CriterioNOT(new CriterioNOT(criterioPorCategoria));
-        assertEquals(1, buscador.buscar(dobleNot).size());
-        assertTrue(buscador.buscar(dobleNot).contains(hotel));
+        assertEquals(1, catalogo.buscar(dobleNot).size());
+        assertTrue(catalogo.buscar(dobleNot).contains(hotel));
     }
 }

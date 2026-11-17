@@ -1,8 +1,8 @@
-package BusquedaEnCatalogo.CriteriosSimples;
+package BusquedaEnCatalogo;
 
 import CatalogoTuristico.ServicioTuristico;
 
-public class CriterioPrecioMaximo extends CriterioSimple {
+public class CriterioPrecioMaximo implements Criterio {
     private float precioMaximo;
 
     public CriterioPrecioMaximo(float precioMaximo){

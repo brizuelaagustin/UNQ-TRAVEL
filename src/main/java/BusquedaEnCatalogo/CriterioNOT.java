@@ -1,9 +1,8 @@
-package BusquedaEnCatalogo.CriteriosComplejos;
+package BusquedaEnCatalogo;
 
-import BusquedaEnCatalogo.Criterio;
 import CatalogoTuristico.ServicioTuristico;
 
-public class CriterioNOT extends CriterioComplejo {
+public class CriterioNOT implements Criterio {
     private Criterio criterio;
 
     public CriterioNOT(Criterio criterio){

@@ -1,9 +1,9 @@
-package BusquedaEnCatalogo.CriteriosSimples;
+package BusquedaEnCatalogo;
 
 import CatalogoTuristico.Categoria;
 import CatalogoTuristico.ServicioTuristico;
 
-public class CriterioCategoria extends CriterioSimple {
+public class CriterioCategoria implements Criterio {
     private Categoria categoriaBuscada;
 
     public CriterioCategoria(Categoria categoriaBuscada){

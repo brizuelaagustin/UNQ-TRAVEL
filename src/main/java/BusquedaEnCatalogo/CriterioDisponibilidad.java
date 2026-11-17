@@ -1,8 +1,8 @@
-package BusquedaEnCatalogo.CriteriosSimples;
+package BusquedaEnCatalogo;
 
 import CatalogoTuristico.ServicioTuristico;
 
-public class CriterioDisponibilidad extends CriterioSimple {
+public class CriterioDisponibilidad implements Criterio {
 
     @Override
     public Boolean satisface(ServicioTuristico servicioTuristico) {
