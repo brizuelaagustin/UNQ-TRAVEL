@@ -20,7 +20,5 @@ public abstract class Atributo {
         return tipoCorrecto(valor);
 
     }
-    //en el getter tambien ver como se devuelve
-    //en el setter haces la validacion y el constructor llama al setter
     protected abstract boolean tipoCorrecto(Object valor);
 }

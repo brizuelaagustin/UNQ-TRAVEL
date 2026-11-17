@@ -3,6 +3,7 @@ import CatalogoTuristico.*;
 import Excepciones.ServicioInvalidoPorAtributoExtra;
 import Excepciones.ServicioInvalidoPorAtributoObligatorio;
 import Excepciones.reservas.OperacionInvalidaException;
+import Excepciones.reservas.ServicioNoEncontradoException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,10 +26,13 @@ public class CatalogoTuristicoTest {
     Atributo atributo3;
     Atributo atributo4;
     CronogramaServicio cronogramaServicio;
+    LocalDate fechaInicio;
+    LocalDate fechaFin;
 
 
     @BeforeEach
     void setUp() {
+        cronogramaServicio = new CronogramaServicio();
         servicio1 = new ServicioIndividual(123, "Noche De Hotel Central", "habitacion para una persona",
                 "proveedor", 0.1f, 2000f, ALOJAMIENTO, cronogramaServicio);
         servicio2 = new ServicioIndividual(124, "Excursion museo", "excursion guiada",
@@ -46,8 +50,8 @@ public class CatalogoTuristicoTest {
         atributo2 = new AtributoDeTexto("PoliticaMascotas",false,"no se admiten");
         atributo3 = new AtributoDeTipoFecha("fechaSalida",false, LocalDate.of(2026,05,10));
         atributo4 = new AtributoTipoBooleano("cancelacion gratis",false,true);
-        cronogramaServicio = mock(CronogramaServicio.class);
-
+        fechaInicio = LocalDate.of(2026, 10, 8);
+        fechaFin = LocalDate.of(2026, 10, 10);
 
     }
     // TEST PRODUCTOS INDIVIDUALES
@@ -218,4 +222,41 @@ public class CatalogoTuristicoTest {
         assertThrows(ServicioInvalidoPorAtributoExtra.class, () -> servicio1.agregarAtributoExtra(atributo6));
     }
 
+    @Test
+    void test023_UnCatalogoNoPuedeAgregarUnServicioQueYaEstaAgregado(){
+        catalogo.registrarNuevoServicio(servicio1);
+        try {
+            catalogo.registrarNuevoServicio(servicio1);
+        } catch (ServicioNoEncontradoException e) {
+            assertEquals(e.getMessage(), "Este servicio ya existe en el catalogo");
+        }
+    }
+    @Test
+    void test024_UnCatalogoNoPuedeRemoverUnServicioQueNoTiene(){
+        try {
+            catalogo.quitarServicio(servicio1);
+        } catch (ServicioNoEncontradoException e) {
+            assertEquals(e.getMessage(), "El servicio no existe en el catalogo");
+        }
+    }
+    @Test
+    void test025_UnCatalogoPuedeRemoverUnServicioQueTiene(){
+        catalogo.registrarNuevoServicio(servicio1);
+        catalogo.quitarServicio(servicio1);
+        assertFalse(catalogo.getServicios().contains(servicio1));
+    }
+    @Test
+    void test026_UnCatalogoNoPuedeResponderSiTieneStockDeUnServicioQueNoPosee(){
+        try {
+            catalogo.tieneStockParaReserva(servicio1, 2, fechaInicio, fechaFin );
+        } catch (ServicioNoEncontradoException e) {
+            assertEquals(e.getMessage(), "El servicio no existe en el catalogo");
+        }
+    }
+    @Test
+    void test027_SeValidaQueUnServicioPuedeDevolverCupos(){
+        cronogramaServicio.agregarCupo(1, fechaInicio, fechaFin);
+        servicio1.devolverCupos(2, fechaInicio, fechaFin);
+        assertTrue(servicio1.getCronogramaServicio().hayCuposEn(fechaInicio,fechaFin,3));
+    }
 }

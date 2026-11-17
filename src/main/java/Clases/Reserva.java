@@ -97,6 +97,9 @@ public class Reserva {
     }
 
     public void agregarServicio(ServicioTuristico servicio,Integer cantidad){
+        if (!servicio.esValido()){
+            throw new RuntimeException("Servicio invalido");
+        }
         estadoDeReserva.agregarServicio(this,servicio,cantidad);
     }
 

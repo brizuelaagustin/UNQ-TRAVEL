@@ -41,4 +41,9 @@ public class ServicioIndividual extends ServicioTuristico{
         return (this.cronogramaServicio.getCuposPorDia().size() > 0);
     }
 
+    @Override
+    public boolean esValido() {
+        return (id != null && nombre != null);
+    }
+
 }

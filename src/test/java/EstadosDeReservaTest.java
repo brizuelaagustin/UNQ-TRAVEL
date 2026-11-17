@@ -68,6 +68,8 @@ public class EstadosDeReservaTest {
         fechaInicio = mock(LocalDate.class);
         fechaFin = mock(LocalDate.class);
 
+        when(servicio.esValido()).thenReturn(true);
+
         estadoPendiente = new Pendiente();
         estadoConfirmado = new Confirmada();
         estadoCheckIn = new CheckIn();

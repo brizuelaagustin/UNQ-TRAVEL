@@ -1,6 +1,7 @@
 package CatalogoTuristico;
 //
 //import Reportes.Visitor;
+import Excepciones.ServicioInvalidoPorAtributoObligatorio;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -14,6 +15,9 @@ public class PaqueteTuristico extends  ServicioTuristico {
 
     public PaqueteTuristico(String nombre, String descripcion,
                             Map<ServicioTuristico, Integer> items, float descuento, CronogramaServicio cronogramaServicio) {
+        if (nombre == null) {
+            throw new ServicioInvalidoPorAtributoObligatorio("servicio invalido, por falta de nombre");
+        }
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.paquetes = new HashMap<>(items);
@@ -56,6 +60,11 @@ public class PaqueteTuristico extends  ServicioTuristico {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean esValido() {
+        return (nombre != null);
     }
 
 }

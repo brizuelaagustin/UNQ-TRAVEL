@@ -22,6 +22,7 @@ public abstract class ServicioTuristico {
     public abstract float getPrecioFinal();
     public abstract Boolean perteneceACategoria(Categoria categoria);
     public abstract boolean tieneDisponibilidad();
+    public abstract boolean esValido();
 
 
     public void quitarCupos(Integer cantidadDeCupos, LocalDate fechaInicio, LocalDate fechaFin) {
